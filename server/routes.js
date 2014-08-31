@@ -24,7 +24,7 @@ module.exports = function(app) {
       if(err) throw err;
       var url = Math.floor(Math.random()*16777215).toString(16);
       rooms[url] = hash;
-      res.redirect('/rooms/' + url);
+      res.send('/rooms/' + url);
     });
   });
 

@@ -1,7 +1,22 @@
 'use strict';
 
 angular.module('webrtcApp')
-  .controller('MainCtrl', function ($scope, $http, socket) {
+  .factory('RoomName', function(){
+    var room = {};
+    function setRoom(name){
+      room.name = name;
+    }
+
+    function getRoom(){
+      return room.name;
+    }
+
+    return {
+      get:getRoom,
+      set:setRoom
+    };
+  })
+  .controller('MainCtrl', function ($scope, $http, socket, $location, RoomName) {
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {
@@ -9,6 +24,12 @@ angular.module('webrtcApp')
       socket.syncUpdates('thing', $scope.awesomeThings);
     });
 
+    $scope.create = function(){
+      $http.get('/create').success(function(resp){
+        RoomName.set(resp);
+        $location.path('/rooms');
+      });
+    };
     $scope.addThing = function() {
       if($scope.newThing === '') {
         return;
