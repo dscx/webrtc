@@ -4,8 +4,12 @@
 
 'use strict';
 
-var config = require('./environment');
 
+
+var config = require('./environment');
+var routes = require('./routes.js');
+
+var allRooms = {};
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
 }
@@ -17,25 +21,56 @@ function onConnect(socket) {
     console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
   });
 
+function onCallStart(socket){
+  socket.on('offer', function(data){
+    socket.broadcast.emit(data)
+  })
+}
+
+function onCallAnswer(socket){
+  socket.on('answer', function(answer){
+    socket.emit(answer);
+  })
+}
+
+var getMedia = function(elem){
+  getUserMedia({
+    audio: true,
+    video: true,
+    requestedMediaTypes: true
+  });
+};
+
+exports.createRoom = function(room){
+  var roomId = room;
+  allRooms[roomId] = 1;
+  //as people join add 1
+  //as people leave, remove 1
+  return roomId;
+};
+
+exports.setRoom = function(room){
+
+}
+
   // Insert sockets below
   require('../api/thing/thing.socket').register(socket);
 }
 
-module.exports = function (socketio) {
-  // socket.io (v1.x.x) is powered by debug.
-  // In order to see all the debug output, set DEBUG (in server/config/local.env.js) to including the desired scope.
-  //
-  // ex: DEBUG: "http*,socket.io:socket"
 
-  // We can authenticate socket.io users and access their token through socket.handshake.decoded_token
-  //
-  // 1. You will need to send the token in `client/components/socket/socket.service.js`
-  //
-  // 2. Require authentication here:
-  // socketio.use(require('socketio-jwt').authorize({
-  //   secret: config.secrets.session,
-  //   handshake: true
-  // }));
+module.exports = function (socketio) {
+ 
+// var namespace = socketio.of('/rooms');
+
+
+
+
+//  namespace.on('connection', function(socket){
+//     console.log('someone connected to the nsp')
+//     socket.join(/*room hash */);
+    
+//   })
+
 
   socketio.on('connection', function (socket) {
     socket.address = socket.handshake.address !== null ?
@@ -50,8 +85,13 @@ module.exports = function (socketio) {
       console.info('[%s] DISCONNECTED', socket.address);
     });
 
+
+
+
     // Call onConnect.
     onConnect(socket);
     console.info('[%s] CONNECTED', socket.address);
   });
+
+
 };
