@@ -6,7 +6,7 @@
 
 var errors = require('./components/errors');
 var bcrypt = require('bcrypt');
-var socket = require('/config/socketio.js');
+var socket = require('./config/socketio.js');
 
 module.exports = function(app) {
   var rooms = {};
@@ -23,8 +23,7 @@ module.exports = function(app) {
       if(err) throw err;
       var url = Math.floor(Math.random()*16777215).toString(16);
       rooms[url] = hash;
-      //create room
-      socket.createRoom(url);
+      //socket.createRoom(url);
       res.redirect('/rooms/' + url);
     });
   });
@@ -35,7 +34,6 @@ module.exports = function(app) {
   
   app.use('/search', function(req, res){
     if(rooms[req.room] !== undefined){
-      socket.setRoom(req.room);
       res.redirect('/rooms/' + req.room);
     }
     else {
