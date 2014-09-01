@@ -7,10 +7,12 @@
 var errors = require('./components/errors');
 var bcrypt = require('bcrypt');
 
+
 module.exports = function(app) {
-  var rooms = {};
+  var cache = {};
 
   // Insert routes below
+  var rooms = require('./api/rooms/rooms.controller');
   app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));
 
@@ -21,10 +23,17 @@ module.exports = function(app) {
   //redirect user to url
   app.use('/create', function(req, res){
     bcrypt.hash(Date.now().toString(), 1, function(err, hash){
-      if(err) throw err;
-      var url = Math.floor(Math.random()*16777215).toString(16);
-      rooms[url] = hash;
-      res.send('/rooms/' + url);
+      if(err){
+        console.log(err);
+        res.send(500);
+        return;
+      }
+      rooms.create(hash)
+        .then(function(room){
+          var url = Math.floor(Math.random()*16777215).toString(16);
+          cache[url] = room.room;
+          res.send({url:url, room:room.room});          
+        });
     });
   });
 
@@ -41,6 +50,5 @@ module.exports = function(app) {
     .get(function(req, res) {
       res.sendfile(app.get('appPath') + '/index.html');
     });
-
-  return rooms;
+    return cache;
 };
