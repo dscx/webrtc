@@ -1,4 +1,4 @@
 webrtc
 ======
 
-Vide Chat
+Video Chat
