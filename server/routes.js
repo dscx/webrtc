@@ -6,6 +6,7 @@
 
 var errors = require('./components/errors');
 var bcrypt = require('bcrypt');
+var socket = require('./config/socketio.js');
 
 
 module.exports = function(app) {
@@ -18,11 +19,10 @@ module.exports = function(app) {
 
   app.use('/auth', require('./auth'));
 
-  //generate hash and attach hash to url string
-      // ...url/rooms/hash
-  //redirect user to url
+ 
   app.use('/create', function(req, res){
     bcrypt.hash(Date.now().toString(), 1, function(err, hash){
+
       if(err){
         console.log(err);
         res.send(500);
@@ -39,8 +39,18 @@ module.exports = function(app) {
 
   app.use('/rooms', function(req, res){
     res.send('hello world');
-  })
+  });
   
+  app.use('/search', function(req, res){
+    if(rooms[req.room] !== undefined){
+      res.redirect('/rooms/' + req.room);
+    }
+    else {
+      res.send(404);
+    }
+  });
+
+
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
    .get(errors[404]);
