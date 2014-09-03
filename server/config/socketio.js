@@ -53,17 +53,19 @@ var namespace = socketio.of('/rooms');
       }
       
       var pid = allRooms[roomId.room].length;
-      socket.webRoom = roomId.room;
       allRooms[roomId.room].push(socket);
 
       var room = roomId.room;
       var otherPids = Array.apply(null, {length: pid}).map(Number.call, Number);
       console.log(otherPids.slice(-1), "the rest");
-      socket.emit('confirm', [otherPids]); //include PID's
+      socket.emit('confirm', {pids:otherPids, pid:pid, room:room}); //include PID's
 
+      //emits to all on conference the new participants information
+      socket.to(room).emit('new', {pid:pid});
       socket.on('disconnect', function(socket){
         if(room !== undefined){
-          allRooms[room].splice(pid, 1);
+          allRooms[room][pid] = null;
+          socket.to(room).emit('left', {pid:pid});
             if(allRooms[room].length === 0){
               delete allRooms[room];
               var roomHash = cache[room];
@@ -75,22 +77,22 @@ var namespace = socketio.of('/rooms');
         }
       });
 
-      socket.on('offer', function(offer){
-
-        //needs to send to each pid
-        for (var i = 0; i < otherPids.length; i++) {
-        var target = allRooms[room][otherPids[i]];
-          target.emit('offer', {'offer': offer, 'pid': pid, 'room': room});
-          console.info('starting call...');
-        }
+      socket.on('offer', function(info){
+        console.log('forwarding offer');
+        var to = allRooms[info.room][info.recipient];
+        to.emit('offer', info);
       });
 
       socket.on('answer', function(response){
         var target = allRooms[response.room][response.pid];
-        target.emit('answer', response.answer);
+        target.emit('answer', response);
         console.info('answering call...');
       });
-
+      socket.on('ice', function(info){
+        console.log('forwarding ice');
+        var to = allRooms[info.room][info.recipient];
+        to.emit('ice', info);      
+      });
     });
 
   });
