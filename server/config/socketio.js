@@ -13,6 +13,10 @@ var allRooms = {};
 var clients = [];
 
 
+var allRooms = {};
+var clients = [];
+
+
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
 }
@@ -21,13 +25,12 @@ function closeRoom(room){
   db.end(room);
 }
 
-
 // When the user connects.. perform this
 function onConnect(socket) {
   // When the client emits 'info', this listens and executes
   socket.on('info', function (data) {
     console.log('testing')
-    console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2), 'PIES');
+    console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
   });
 
   // Insert sockets below
@@ -91,13 +94,11 @@ var namespace = socketio.of('/rooms');
 
   })
 
-
   socketio.on('connection', function (socket) {
 
     socket.address = socket.handshake.address !== null ?
             socket.handshake.address.address + ':' + socket.handshake.address.port :
             process.env.DOMAIN;
-
 
     socket.connectedAt = new Date();
 
