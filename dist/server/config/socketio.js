@@ -81,6 +81,7 @@ var namespace = socketio.of('/rooms');
         };
       });
 
+        //replies to each offer
       socket.on('answer', function(response){
         var target = allRooms[response.room][response.pid];
         target.emit('answer', response.answer);
