@@ -7,30 +7,18 @@
 
 
 var config = require('./environment');
+var db = require('../api/rooms/rooms.controller.js');
 
 var allRooms = {};
-var clients = [];
-
 
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
 }
 
+//deletes room from DB
 function closeRoom(room){
-  if(allRooms[room] === 0){
-    delete allRooms[room];
-  }
+  db.end(room);
 }
-
-function onCallStart(socket){
-    socket.broadcast.emit(offer)
-}
-
-function onCallAnswer(socket){
-    socket.emit(answer);
-}
-
-
 
 // When the user connects.. perform this
 function onConnect(socket) {
@@ -45,22 +33,64 @@ function onConnect(socket) {
 }
 
 
-module.exports = function (socketio) {
- 
-// var namespace = socketio.of('/rooms');
+module.exports = function (socketio, cache) {
+console.log("eneter")
+var namespace = socketio.of('/rooms');
 
-//  namespace.on('connection', function(socket){
-//     console.log('someone connected to the nsp')
-//     socket.join(/*room hash */);
+ //joins namespace when user enters room
+ namespace.on('connection', function(socket){
+    console.log('someone connected to the namespace');
+    socket.address = socket.handshake.address !== null ?
+          socket.handshake.address.address + ':' + socket.handshake.address.port :
+          process.env.DOMAIN;
     
-//   })
+    socket.on('room', function(roomId){
+      socket.join(roomId.room);
 
-// var createRoom = function(room){
-//   var roomId = room;
-//   allRooms[roomId] = 1;
-//   console.log(allRooms);
-//   return roomId;
-// };
+      if(!allRooms[roomId.room]){
+        allRooms[roomId.room] = [];
+      }
+      
+      var pid = allRooms[roomId.room].length;
+      socket.webRoom = roomId.room;
+      allRooms[roomId.room].push(socket);
+      var room = roomId.room;
+      var otherPids = Array.apply(null, {length: pid}).map(Number.call, Number);
+      console.log(otherPids.slice(-1), "the rest");
+      socket.emit('confirm', [otherPids]); //include PID's
+
+      socket.on('disconnect', function(socket){
+        if(room !== undefined){
+          allRooms[room].splice(pid, 1);
+            if(allRooms[room].length === 0){
+              delete allRooms[room];
+              var roomHash = cache[room];
+              delete cache[room];
+              closeRoom(roomHash);
+              console.log("Room Closed");
+           }
+        }
+      });
+
+      socket.on('offer', function(offer){
+        //needs to send to each pid
+        for (var i = 0; i < otherPids.length; i++) {
+        var target = allRooms[room][otherPids[i]];
+        target.emit('offer', {'offer': offer, 'pid': pid, 'room': room});
+        console.info('starting call...');
+        };
+      });
+
+      socket.on('answer', function(response){
+        var target = allRooms[response.room][response.pid];
+        target.emit('answer', response.answer);
+        console.info('answering call...');
+      });
+
+    });
+
+  })
+
 
   socketio.on('connection', function (socket) {
 
@@ -72,24 +102,16 @@ module.exports = function (socketio) {
     socket.connectedAt = new Date();
 
     // Call onConnect.
-    onConnect(socket);
+    //onConnect(socket);
     console.info('[%s] CONNECTED', socket.address);
 
-    socket.on('offer', function(offer){
-      onCallStart(socket);
-      console.info('starting call...')
-    });
-
-    socket.on('answer', function(answer){
-      onCallAnswer(socket);
-      console.info('answering call...')
-    });
+    
 
     // Call onDisconnect.
-    socket.on('disconnect', function () {
-      onDisconnect(socket);
-      console.info('[%s] DISCONNECTED', socket.address);
-    });
+    // socket.on('disconnect', function () {
+    //   //onDisconnect(socket);
+    //   console.info('[%s] DISCONNECTED', socket.address);
+    // });
   });
 
 
