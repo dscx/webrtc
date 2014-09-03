@@ -46,6 +46,7 @@ var namespace = socketio.of('/rooms');
           process.env.DOMAIN;
     
     socket.on('room', function(roomId){
+      console.log(roomId);
       socket.join(roomId.room);
       if(!allRooms[roomId.room]){
         allRooms[roomId.room] = [];
@@ -59,7 +60,7 @@ var namespace = socketio.of('/rooms');
 
            
       var room = roomId.room;
-
+      console.log(room, roomId, 'ln 62');
       socket.on('disconnect', function(socket){
         if(room !== undefined){
           allRooms[room].splice(pid, 1);
@@ -73,6 +74,7 @@ var namespace = socketio.of('/rooms');
       });
 
       socket.on('offer', function(offer){
+        console.log('room in offer', room);
        socket.broadcast.emit('offer', {'offer': offer, 'pid': pid, 'room': room});
         // console.log(socket.address, 'address');
         console.info('starting call...');
@@ -83,7 +85,8 @@ var namespace = socketio.of('/rooms');
         target.emit('answer', response.answer);
         console.info('answering call...');
       });
-
+      
+      socket.emit('confirm', {participants:allRooms[room].length});
     });
 
   })

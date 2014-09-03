@@ -10,7 +10,6 @@ angular.module('webrtcApp')
       // 'query': 'token=' + Auth.getToken()
       path: '/socket.io-client'
     });
-
     var socket = socketFactory({
       ioSocket: ioSocket
     });

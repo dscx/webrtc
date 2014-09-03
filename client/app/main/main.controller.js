@@ -1,23 +1,23 @@
 'use strict';
 
 angular.module('webrtcApp')
-  .factory('RoomName', function(){
-    var room = {};
-    function setRoom(name){
-      room.name = name;
-    }
-
-    function getRoom(){
-      return room.name;
-    }
-
-    return {
-      get:getRoom,
-      set:setRoom
-    };
-  })
-  .controller('MainCtrl', function ($scope, $http, socket, $location, RoomName) {
+  .controller('MainCtrl', function ($scope, $http, socket, $location) {
     $scope.awesomeThings = [];
+
+    var query = $location.search();
+    if(query.room !== undefined){
+      $http.get('/search', {params:{room:query.room}})
+        .success(function(resp){
+          if(resp.url === query.room){
+            $location.hash(resp.url);
+            $location.path('/rooms/');
+            console.log(resp);
+          } else {
+            $location.search({});
+          }
+          
+        });
+    }
 
     $http.get('/api/things').success(function(awesomeThings) {
       $scope.awesomeThings = awesomeThings;
@@ -26,8 +26,8 @@ angular.module('webrtcApp')
 
     $scope.create = function(){
       $http.get('/create').success(function(resp){
-        RoomName.set(resp);
-        $location.path('/rooms');
+        $location.path('/rooms/');
+        $location.hash(resp.url);
       });
     };
     $scope.addThing = function() {

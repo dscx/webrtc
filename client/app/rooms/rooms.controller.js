@@ -1,8 +1,13 @@
 'use strict';
 angular.module('webrtcApp')
-.controller('RoomController', function($scope, RoomName){
+.controller('RoomController', function($scope, WebRTC, $location){
   $scope.room = {};
-  $scope.room.name = RoomName.get();
+  var name = $ocation.hash();
+  console.log('NAME IS', name);
+  $scope.room.name = name;
 
-  console.log($scope.room.name);
+  var connect = function(room){
+    WebRTC.connect(room);
+  };
+  connect($scope.room.name);
 });
