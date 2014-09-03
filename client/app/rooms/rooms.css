@@ -1,0 +1,62 @@
+.whiteboard {
+  width: 100%;
+  height: 100vh;   
+}
+.sidebar-videos {
+  margin: 2vh 0;
+}
+.presentation {
+  margin: 2vh 0;
+  height: 96vh;
+  margin-left: 40px;
+}
+.main.video {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.individual.video {
+  display: block;
+  width: 100%;
+  height: 24vh;
+}
+.slide-out {
+  position: absolute;
+  top: 10px;
+  left: -245px;
+  z-index: 1;
+  padding-right: 20px;
+  transition: left 1s ease;
+  border-radius: 0 5px 5px 0;
+  background: rgba(0,0,255,.5);
+}
+.slide-out:hover {
+  left: 0px;
+}
+.slide-out ul {
+  list-style: none;
+}
+.slide-out li {
+  display: block;
+  float: left;
+  padding: 10px;
+  height: 100%;
+}
+.slide-out li:hover {
+  background-color: rgba(255,0,0,.5);
+  height: 100%;
+}
+.chat {
+  left: -245px;
+  z-index: 1;
+  width: 265px;
+  position: absolute;
+  top: 100px;
+  padding-right: 20px;
+  border-radius: 0 5px 5px 0;
+  transition: left 1s ease;
+  background-color: rgba(0,255,0,.5);
+}
+.chat:hover {
+  left: 0px;
+}

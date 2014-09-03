@@ -1,3 +1,37 @@
+body {
+    background: url(/assets/images/city.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.btn-container > a {
+    color: #00CCFF;
+    text-decoration: none;
+    cursor: pointer;
+    background: rgba(51,204,255,0.60);
+}
+
+.btn-container > a:hover {
+    color: #D6FFFF;
+}
+
+.button {
+    margin: auto;
+    width: 180px;
+    background-color: #333;
+    display: block;
+    font-size: 18px;
+    opacity: 1.0 !important;
+    border-radius: 4px;
+    padding: 12px;
+}
+
+.btn-container {
+    padding: 20px;
+}
+
 .thing-form {
     margin: 20px 0;
 }
@@ -14,12 +48,19 @@
 }
 
 .hero-unit {
+    margin: 90px auto !important;
+    width: 480px;
+    height: 320px;
     position: relative;
-    padding: 30px 15px;
-    color: #F5F5F5;
+    padding-top: 20px !important;
+    padding-bottom: 30px !important;
+    padding-right: 60px !important;
+    padding-left: 60px !important;
+    color: #FFF;
     text-align: center;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-    background: #4393B9;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.55);
 }
 
 .footer {
