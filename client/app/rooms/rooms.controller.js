@@ -1,13 +1,16 @@
 'use strict';
 angular.module('webrtcApp')
-.controller('RoomController', function($scope, WebRTC, $location){
+.controller('RoomController', function($scope, $location){
   $scope.room = {};
-  var name = $ocation.hash();
-  console.log('NAME IS', name);
-  $scope.room.name = name;
-
-  var connect = function(room){
-    WebRTC.connect(room);
+  $scope.room.name = $location.hash();
+  $scope.main = 'assets/test-videos/keypeele.webm';
+  $scope.sidebarVideos = ['assets/test-videos/bunny.mp4', 'assets/test-videos/html5-video-element-test.mp4', 'assets/test-videos/quadcopter.webm', 'assets/test-videos/small.mp4'];
+  $scope.supplantMain = function(video) {
+    console.log('Old: ', $scope.main);
+    var index = $scope.sidebarVideos.indexOf(video);
+    $scope.sidebarVideos[index] = $scope.main;
+    $scope.main = video;
+    console.log('New: ', $scope.main);
   };
-  connect($scope.room.name);
+  console.log($scope.room.name);
 });

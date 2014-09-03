@@ -1,0 +1,33 @@
+<ul class="slide-out">
+  <li>Toggle Video</li>
+  <li>Toggle Audio</li>
+</ul>
+<div class="chat">
+  <div class="header-chat">
+    <h5>Chat</h5>
+    <div>X</div>
+  </div>
+  <div class="main-chat">
+    <p>This is the chat area</p>
+    <p>Put whatever the heck you want in it</p>
+    <p>Fo' sho'</p>
+  </div>
+  <form class="new-chat">
+    <input type="text">
+    <input type="submit"/>
+  </form>
+</div>
+<div class="row">
+  <div class="col-sm-9">
+    <div class="whiteboard hide">
+      <p>This is our whiteboard</p>
+      <p>we can put all sorts of stuff in it</p>
+    </div>
+    <div class="presentation">
+      <video class="video main" src="{{main}}" autoplay="autoplay"></video>
+    </div>
+  </div>
+  <div class="col-sm-3 sidebar-videos">
+    <video ng-repeat="video in sidebarVideos" ng-click="supplantMain(video)" class="video individual" src="{{video}}"></video>
+  </div>
+</div>
