@@ -10,7 +10,6 @@
 ## What's the Problem? ##
   > Account creation. Broken links. Choppy video. Video conferencing is a mess.
 
-
   > Until now. We have utilized the brilliant WebRTC to bring you a simpler video conferencing solution.
 
 ## Quote from You ##
