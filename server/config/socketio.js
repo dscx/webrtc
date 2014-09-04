@@ -56,13 +56,11 @@ var namespace = socketio.of('/rooms');
 
       var room = roomId.room;
       var otherPids = Array.apply(null, {length: pid}).map(Number.call, Number);
-     console.log(otherPids, "PIDS 1");
       if(otherPids.length > 1){
         otherPids = otherPids.splice(0, otherPids.length - 1);
       } else {
         otherPids = [];
       }
-      console.log(otherPids, "PIDS");
       socket.emit('confirm', {pids:otherPids, pid:pid, room:room});
 
       //emits to all on conference the new participants information
@@ -72,8 +70,8 @@ var namespace = socketio.of('/rooms');
           //allRooms[room][pid] = null;
           allRooms[room].splice(pid, 1);
           namespace.to(room).emit('left', {pid:pid});
-          console.log(allRooms[room].length, "remaining participants");
-            if(allRooms[room].length === 0){
+          console.log(allRooms[room].length - 1, "remaining participants");
+            if(allRooms[room].length === 1){
               delete allRooms[room];
               var roomHash = cache[room];
               delete cache[room];
