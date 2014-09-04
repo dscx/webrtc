@@ -79,22 +79,29 @@ var namespace = socketio.of('/rooms');
 
       //Signalling below
       socket.on('offer', function(info){
-        console.log('forwarding offer');
         var to = allRooms[info.room][info.recipient];
-        to.emit('offer', info);
+        if(to){
+          to.emit('offer', info);
+          console.log('forwarding offer');
+        }
       });
 
         //replies to each offer
       socket.on('answer', function(response){
         var target = allRooms[response.room][response.recipient];
-        target.emit('answer', response);
-        console.info('answering call...');
+        if(target){
+          target.emit('answer', response);
+          console.info('answering call...');
+        }
       });
 
       socket.on('ice', function(info){
-        console.log('forwarding ice');
+        
         var to = allRooms[info.room][info.recipient];
-        to.emit('ice', info);      
+        if(to){
+          to.emit('ice', info);   
+          console.log('forwarding ice');
+        }   
       });
     });
 
