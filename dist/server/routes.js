@@ -38,29 +38,23 @@ module.exports = function(app) {
   });
 
   app.use('/rooms', function(req, res){
-    res.redirect('/');
+    res.send('hello world');
   });
   
   app.use('/search', function(req, res){
-    var r = req.query.room;
-    if(req.headers.referer === undefined){
-      res.redirect('/?room='+ r);
-      return;
-    }
-
-    var roomHash = cache[r];
+    var roomHash = cache[req.room];
     if(roomHash !== undefined){
       rooms.find(roomHash).then(function(room){
         if(room){
-          res.send({url:r});
-        } else {
+        res.redirect('/rooms/' + req.room);
+        }
+        else {
           res.send(404, "meeting over");
         }
       })
     }
     else{ 
-      console.log('SENT 404');
-      res.redirect('/*');
+      res.send(404);
     }
   });
 
