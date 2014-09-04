@@ -242,9 +242,6 @@ angular.module('webrtcApp')
   }
 
   function getMyStream(){
-    if(!myStream){
-      myMedia();
-    }
     return myStream;
   }
 
