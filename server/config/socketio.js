@@ -51,22 +51,22 @@ var namespace = socketio.of('/rooms');
       if(!allRooms[roomId.room]){
         allRooms[roomId.room] = [];
       }
-      
+
       var pid = allRooms[roomId.room].length;
       allRooms[roomId.room].push(socket);
 
       var room = roomId.room;
       var otherPids = Array.apply(null, {length: pid}).map(Number.call, Number);
-      console.log(otherPids.slice(-1), "the rest");
       socket.emit('confirm', {pids:otherPids, pid:pid, room:room}); //include PID's
 
       //emits to all on conference the new participants information
       socket.to(room).emit('new', {pid:pid});
       socket.on('disconnect', function(socket){
         if(room !== undefined){
-          allRooms[room][pid] = null;
+          //allRooms[room][pid] = null;
+          allRooms[room].splice(pid, 1);
           namespace.to(room).emit('left', {pid:pid});
-          console.log(allRooms[room].length, "LENGTH")
+          console.log(allRooms[room].length, "remaining participants")
             if(allRooms[room].length === 0){
               delete allRooms[room];
               var roomHash = cache[room];
