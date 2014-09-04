@@ -27,14 +27,21 @@ angular.module('webrtcApp')
   };
 
   $scope.setInitial();
-  $scope.sidebarVideos = {links:{}};
+  $scope.sidebarVideos = {links:{}, length:0};
   $scope.setAvideo = function(){
     var keys = Object.keys($scope.sidebarVideos.links);
-    if(keys.length > 0){
-      var vidElem = angular.element.find('.individual')[0];
-      if(!vidElem.src){
-        attachMediaStream(vidElem, $scope.sidebarVideos.links[keys[0]]);
+    // if a new video has been added
+    if(keys.length > $scope.sidebarVideos.length){
+      // find sidebar
+      var sidebarElem = angular.element.find('.sidebar-videos')[0];
+      // find new videos
+      for (var i = $scope.sidebarVideos.length; i < keys.length; i++) {
+        console.log('New Video',$scope.sidebarVideos.links[keys[i]]);
+        var vidElem = angular.element('<video class="video individual" autoplay></video>');
+        angular.element(sidebarElem).append(vidElem);
+        attachMediaStream(vidElem[0], $scope.sidebarVideos.links[keys[i]]);
       }
+      $scope.sidebarVideos.length = keys.length;
     }
   };
 
