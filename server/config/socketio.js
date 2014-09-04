@@ -64,8 +64,10 @@ var namespace = socketio.of('/rooms');
       socket.to(room).emit('new', {pid:pid});
       socket.on('disconnect', function(socket){
         if(room !== undefined){
-          allRooms[room][pid] = null;
+          //allRooms[room][pid] = null;
+          allRooms[room].splice(pid, 1);
           namespace.to(room).emit('left', {pid:pid});
+          console.log(allRooms[room].length, "LENGTH");
             if(allRooms[room].length === 0){
               delete allRooms[room];
               var roomHash = cache[room];
