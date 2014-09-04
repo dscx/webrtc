@@ -63,16 +63,26 @@ angular.module('webrtcApp')
     });
   }
 
-
+  function addLocal(pc){
+    if(!myStream){
+      setTimeout(function(){
+        addLocal(pc);
+      }, 500);
+    } else {
+      pc.addStream(myStream);
+      pc.haslocal = true;
+    }
+  }
   //Creates an RTC connection for a point to point connection
   function createRTC(pid){
     //{'iceServers':[{'urls':'stun:stun.iptel.org'}]}
     var pc = new RTCPeerConnection({'iceServers':[{'urls':'stun:stun.iptel.org'}]});
     trace('Created new Peer connection. l:54');
-    pc.haslocal = false;
     var gotSDP = false;
     var iceCandidates = [];
-    media(pc,pid);
+    //media(pc,pid);
+    addLocal(pc);
+    
     //attaches remote stream to dom
     //var elem;
     pc.onaddstream = function(remoteStream){
@@ -97,8 +107,9 @@ angular.module('webrtcApp')
     }
 
     function sendOffer(callback){
-      if(!pc.haslocal || !myRTClocal[pid]){
-        media(pc, pid);
+      // !myRTClocal[pid]
+      //media(pc, pid);
+      if(!pc.haslocal){
         setTimeout(function(){
           sendOffer(callback);
         },500);
