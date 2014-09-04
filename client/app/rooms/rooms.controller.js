@@ -39,7 +39,7 @@ angular.module('webrtcApp')
   };
 
   $scope.updateStreams = function(){
-    console.log(WebRTC.getStreams);
+    //console.log(WebRTC.getStreams);
     $timeout(function(){
       $scope.sidebarVideos.links = WebRTC.getStreams;
       $scope.setAvideo();
