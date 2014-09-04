@@ -52,6 +52,13 @@ var namespace = socketio.of('/rooms');
         allRooms[roomId.room] = [];
       }
 
+      if(!allRooms[roomId.room].counter){
+        allRooms[roomId.room].counter = 1;
+      } else{
+        allRooms[roomId.room].counter++;
+      }
+
+
       var pid = allRooms[roomId.room].length;
       allRooms[roomId.room].push(socket);
 
@@ -63,11 +70,11 @@ var namespace = socketio.of('/rooms');
       socket.to(room).emit('new', {pid:pid});
       socket.on('disconnect', function(socket){
         if(room !== undefined){
-          //allRooms[room][pid] = null;
-          allRooms[room].splice(pid, 1);
+          allRooms[room][pid] = null;
+          allRooms[room].counter--;
           namespace.to(room).emit('left', {pid:pid});
           console.log(allRooms[room].length, "remaining participants")
-            if(allRooms[room].length === 0){
+            if(allRooms[room].counter === 0){
               delete allRooms[room];
               var roomHash = cache[room];
               delete cache[room];
