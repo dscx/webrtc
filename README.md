@@ -10,3 +10,27 @@ webrtc - video chat
   - Product Owner: Gabar Ewen
   - Scrum Master: Dan Chamberlain
   - Development Team Members: Zach Gibb, Dan Chung
+
+## Usage
+
+Use our app as a light-weight alternative to google hangouts or skype. No signup required. Click and go.
+
+## Requirements
+
+- Node
+- MongoDb
+- Socket io
+- Angular
+
+## Development
+
+### Installing Dependencies
+
+From within the root directory:
+
+npm install
+bower install
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
