@@ -6,6 +6,54 @@ body {
     background-size: cover;
 }
 
+.logo {
+    color: #777 !important;
+}
+
+.navbar-header > a:hover {
+    color: #00CCFF !important;
+}
+
+.navigation {
+    background: rgba(44,44,44,0.5) !important;
+    color: #FFF;
+    border: none;
+}
+
+.nav > li > a:hover {
+    color: #00CCFF !important;
+}
+
+.form {
+    display: inline !important;
+    float: left !important;
+    margin-top: 14px !important;
+}
+
+input {
+    padding: 0px !important;
+    background: rgba(99,99,99,0.25);
+    border: 1px solid #444;
+    border-radius: 4px;
+    vertical-align: bottom;
+    height: 24px;
+}
+
+.submit-button {
+    margin-left: 14px !important;
+    background-color: #333 !important;
+    border-radius: 4px;
+    border: 1px solid #444;
+    width: 60px;
+    height: 24px;
+    color: #777;
+    padding: 0;
+}
+
+.submit-button:hover {
+    color: #00CCFF;
+}
+
 .btn-container > a {
     color: #00CCFF;
     text-decoration: none;
