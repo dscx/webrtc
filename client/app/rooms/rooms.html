@@ -23,11 +23,15 @@
       <p>This is our whiteboard</p>
       <p>we can put all sorts of stuff in it</p>
     </div>
+
     <div class="presentation">
-      <video class="video main" autoplay="autoplay"></video>
+      <h4>{{meetingLink}}</h4>
+      <video class="video main" autoplay muted></video>
     </div>
   </div>
   <div class="col-sm-3 sidebar-videos">
-    <video ng-repeat="video in sidebarVideos" ng-click="supplantMain(video)" class="video individual" src="{{video}}"></video>
+    <!-- <video ng-repeat="video in sidebarVideos" ng-click="supplantMain(video)" class="video individual"></video> -->
+    <h1>{{sidebarVideos.links}}</h1>
+    <video class="video individual" autoplay></video>
   </div>
 </div>

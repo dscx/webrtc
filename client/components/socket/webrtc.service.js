@@ -49,12 +49,15 @@ angular.module('webrtcApp')
   // }
 
   //Gets own media stream, and appends onto the dom
+  var myStreamCounter = 0;
   function myMedia(){
     //var elem = createElement();
     //elem.id = "my-video";
+    myStreamCounter++;
     getUserMedia(contraint, function(stream){
       myStream = stream;
-      myRTClocal.push(stream);
+      trace('created stream' + stream.id);
+      myRTClocal[myPid+'id:'+myStreamCounter]=stream;
     }, function(err){
       trace('ERROR: '+err);
     });
@@ -66,16 +69,21 @@ angular.module('webrtcApp')
     //{'iceServers':[{'urls':'stun:stun.iptel.org'}]}
     var pc = new RTCPeerConnection({'iceServers':[{'urls':'stun:stun.iptel.org'}]});
     trace('Created new Peer connection. l:54');
-    
+    pc.haslocal = false;
+    var gotSDP = false;
+    var iceCandidates = [];
+    media(pc,pid);
     //attaches remote stream to dom
     //var elem;
     pc.onaddstream = function(remoteStream){
       //elem = elem|| createElement();
       //trace('Adding RemoteStream', elem);
       //attachMediaStream(elem, remoteStream);
-      streams[pid] = remoteStream;
+      //if(streams[pid] === undefined){
+        console.log('added stream', remoteStream);
+        streams[pid] = remoteStream.stream;
+      //}
     };
-
     function setLocalDescription(description){
       pc.setLocalDescription(description);
     }
@@ -83,25 +91,32 @@ angular.module('webrtcApp')
     function sendAnswer(callback){
       pc.createAnswer(function(description){
         setLocalDescription(description);
-        trace('Sending answer description' + description.sdp);
+        // trace('Sending answer description' + description.sdp);
         callback(description);
       }, trace);
     }
 
     function sendOffer(callback){
-      pc.createOffer(function(description){
-        setLocalDescription(description);
-        trace('Sending offer description' + description.sdp);
-        callback(description);
-      }, trace);
+      if(!pc.haslocal || !myRTClocal[pid]){
+        media(pc, pid);
+        setTimeout(function(){
+          sendOffer(callback);
+        },500);
+      } else {
+        pc.createOffer(function(description){
+          setLocalDescription(description);
+          // trace('Sending offer description' + description.sdp);
+          callback(description);
+        }, trace);
+      }
     }
 
     function onOffer(description, callback){
       console.log(description);
-      trace('setting remote description', description.sdp);
+      gotSDP = true;
+      // trace('setting remote description', description.sdp);
       try{
         pc.setRemoteDescription(new RTCSessionDescription(description), function(success){
-          trace('from setremote' + success);
           sendAnswer(callback);
         }, function(err){
           trace('ERROR 87 ====>' + err);
@@ -109,11 +124,11 @@ angular.module('webrtcApp')
       } catch(e){
         trace('e ====>' + e);
       }
-      trace('after setting remote description');
     }
 
     function onAnswer(description){
-      trace('Received answer' + description.sdp);
+      gotSDP = true;
+      // trace('Received answer' + description.sdp);
       try {
         pc.setRemoteDescription(new RTCSessionDescription(description));
       } catch(e){
@@ -127,13 +142,20 @@ angular.module('webrtcApp')
         if (event.candidate) {
           callback(event.candidate);
           //remotePeerConnection.addIceCandidate(new RTCIceCandidate(event.candidate));
-          trace("Local ICE candidate: \n" + event.candidate.candidate);
+          // trace("Local ICE candidate: \n" + event.candidate.candidate);
         }
       };
     }
 
     function onRemoteIceCandidates(candidate){
-      pc.addIceCandidate(new RTCIceCandidate(candidate));
+      if(gotSDP){
+        console.log('adding ice');
+        pc.addIceCandidate(new RTCIceCandidate(candidate));
+      } else {
+        setTimeout(function(){
+          onRemoteIceCandidates(candidate);
+        }, 100);
+      }
     }
     return {
       pc:pc,
@@ -159,6 +181,7 @@ angular.module('webrtcApp')
         peers[v]= createRTC(v);
       });
     }
+    startCall();
     //Add rpc connecion for new participants
     RtcSock.socket.on('new', function(data){
       trace('adding new connection');
@@ -174,12 +197,12 @@ angular.module('webrtcApp')
 
   //Iterates through peers , sending requests for each
   function sendOffers(){
-    trace('sending offers to ' + Object.keys(peers));
+    // trace('sending offers to ' + Object.keys(peers));
     Object.keys(peers).forEach(function(pid){
       var recipient = pid;
       var sender = myPid;
       //Add a media stream to peer connection
-      media(peers[pid].pc);
+      // media(peers[pid].pc);
       peers[pid].onLocalIceCandidates(function(candidate){
         RtcSock.socket.emit('ice', {candidate:candidate, recipient:recipient, sender:myPid, room:room});
       });
@@ -193,9 +216,7 @@ angular.module('webrtcApp')
   RtcSock.socket.on('offer', function(data){
       //Adds the new peer if they aren't in the list
     if(!peers[data.sender]){
-      trace('before setting peer');
       peers[data.sender] = createRTC(data.sender);
-      trace('after setting peer');
     }
     var rtc = peers[data.sender];
 
@@ -203,12 +224,20 @@ angular.module('webrtcApp')
     rtc.onLocalIceCandidates(function(candidate){
       RtcSock.socket.emit('ice', {candidate:candidate, sender:myPid, recipient:data.sender, room:room });
     });
-    media(rtc.pc);
+    
 
     console.log(data);
     rtc.onOffer(data.offer, function(ans){
-      trace('sending answer', ans);
       RtcSock.socket.emit('answer', { answer:ans, sender:myPid, recipient:data.sender, room:room });
+
+      // if(rtc.pc.offerCount === 0){
+      //   //rtc.pc.offerCount++;
+      //   rtc.sendOffer(function(offer){
+      //      RtcSock.socket.emit('offer', {offer:offer, sender:myPid, recipient:data.sender, room:room});
+      //   });
+      // } else {
+      //   rtc.pc.offerCount = 0;
+      // }
     });
   });
 
@@ -225,10 +254,11 @@ angular.module('webrtcApp')
   });
     
   //Does not trigger above
-  function media(pc){
+  function media(pc, pid){
     getUserMedia(contraint, function(localStream){
       pc.addStream(localStream);
-      myRTClocal.push(localStream);
+      pc.haslocal = true;
+      myRTClocal[pid] = localStream;
     }, trace);
   }
 
@@ -242,32 +272,37 @@ angular.module('webrtcApp')
   }
 
   function getMyStream(){
-    if(!myStream){
-      myMedia();
-    }
     return myStream;
   }
 
   //The below pauses all streams
   function toggleVideo(){
-    myRTClocal.forEach(function(stream){
-      toggleVideoStream(stream);
+   Object.keys(myRTClocal).forEach(function(key){
+      toggleVideoStream(myRTClocal[key]);
     });
   }
 
   function toggleAudio(){
-    myRTClocal.forEach(function(stream){
-      toggleAudioStream(stream);
+    Object.keys(myRTClocal).forEach(function(key){
+      toggleAudioStream(myRTClocal[key]);
     });
   }
 
   //Toggles specific stream
   function toggleAudioStream(stream){
-    stream.getAudioTracks()[0].enabled =
-      !(stream.getAudioTracks()[0].enabled);
+    trace('toggle audio of'+ stream.id);
+    try {
+    stream.getAudioTracks().forEach(function(track){
+      console.log(track);
+      track.enabled = !track.enabled;
+    });
+    } catch(e){
+      trace('e ===>'+e);
+    }
   }
 
   function toggleVideoStream(stream){
+    trace('toggle video of'+ stream.id);
     stream.getVideoTracks()[0].enabled =
       !(stream.getVideoTracks()[0].enabled);
   }
@@ -275,7 +310,7 @@ angular.module('webrtcApp')
   
   return {
     join:joinRoom,
-    getStreams:getStreams,
+    getStreams:streams,
     start:startCall,
     myStream:getMyStream,
     toggleAudio:toggleAudio,

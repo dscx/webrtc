@@ -86,7 +86,7 @@ var namespace = socketio.of('/rooms');
 
         //replies to each offer
       socket.on('answer', function(response){
-        var target = allRooms[response.room][response.pid];
+        var target = allRooms[response.room][response.recipient];
         target.emit('answer', response);
         console.info('answering call...');
       });
