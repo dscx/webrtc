@@ -8,7 +8,6 @@
 
 var config = require('./environment');
 var db = require('../api/rooms/rooms.controller.js');
-
 var allRooms = {};
 
 // When the user disconnects.. perform this
@@ -52,21 +51,27 @@ var namespace = socketio.of('/rooms');
         allRooms[roomId.room] = [];
       }
       
-      var pid = allRooms[roomId.room].length;
       allRooms[roomId.room].push(socket);
+      var pid = allRooms[roomId.room].length;
 
       var room = roomId.room;
       var otherPids = Array.apply(null, {length: pid}).map(Number.call, Number);
-      console.log(otherPids.slice(-1), "the rest");
-      socket.emit('confirm', {pids:otherPids, pid:pid, room:room}); //include PID's
+      if(otherPids.length > 1){
+        otherPids = otherPids.splice(0, otherPids.length - 1);
+      } else {
+        otherPids = [];
+      }
+      socket.emit('confirm', {pids:otherPids, pid:pid, room:room});
 
       //emits to all on conference the new participants information
       socket.to(room).emit('new', {pid:pid});
       socket.on('disconnect', function(socket){
         if(room !== undefined){
-          allRooms[room][pid] = null;
+          //allRooms[room][pid] = null;
+          allRooms[room].splice(pid, 1);
           namespace.to(room).emit('left', {pid:pid});
-            if(allRooms[room].length === 0){
+          console.log(allRooms[room].length - 1, "remaining participants");
+            if(allRooms[room].length === 1){
               delete allRooms[room];
               var roomHash = cache[room];
               delete cache[room];
