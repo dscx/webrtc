@@ -65,7 +65,7 @@ var namespace = socketio.of('/rooms');
       socket.on('disconnect', function(socket){
         if(room !== undefined){
           allRooms[room][pid] = null;
-          socket.to(room).emit('left', {pid:pid});
+          namespace.to(room).emit('left', {pid:pid});
             if(allRooms[room].length === 0){
               delete allRooms[room];
               var roomHash = cache[room];
@@ -77,6 +77,7 @@ var namespace = socketio.of('/rooms');
         }
       });
 
+      //Signalling below
       socket.on('offer', function(info){
         console.log('forwarding offer');
         var to = allRooms[info.room][info.recipient];
@@ -88,6 +89,7 @@ var namespace = socketio.of('/rooms');
         target.emit('answer', response);
         console.info('answering call...');
       });
+
       socket.on('ice', function(info){
         console.log('forwarding ice');
         var to = allRooms[info.room][info.recipient];

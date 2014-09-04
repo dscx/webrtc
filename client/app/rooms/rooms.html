@@ -1,6 +1,6 @@
 <ul class="slide-out">
-  <li>Toggle Video</li>
-  <li>Toggle Audio</li>
+  <li ng-click="toggleMyVideo()">Toggle Video</li>
+  <li ng-click="toggleMyAudio()">Toggle Audio</li>
 </ul>
 <div class="chat">
   <div class="header-chat">
@@ -24,7 +24,7 @@
       <p>we can put all sorts of stuff in it</p>
     </div>
     <div class="presentation">
-      <video class="video main" src="{{main}}" autoplay="autoplay"></video>
+      <video class="video main" autoplay="autoplay"></video>
     </div>
   </div>
   <div class="col-sm-3 sidebar-videos">
