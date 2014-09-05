@@ -5,6 +5,7 @@ angular.module('webrtcApp')
   $scope.room.name = $location.hash();
   $scope.myStream = {};
   $scope.main = {};
+  $scope.meetingLink = 'http://localhost:9000/search?room='+$scope.room.name;
   WebRTC.join($scope.room.name);
   //using settimeout to wait until user stream is available
   $scope.setInitial = function(){
@@ -26,7 +27,35 @@ angular.module('webrtcApp')
   };
 
   $scope.setInitial();
-  $scope.sidebarVideos = ['assets/test-videos/bunny.mp4', 'assets/test-videos/html5-video-element-test.mp4', 'assets/test-videos/quadcopter.webm', 'assets/test-videos/small.mp4'];
+  $scope.sidebarVideos = {links:{}, length:0};
+  $scope.setAvideo = function(){
+    var keys = Object.keys($scope.sidebarVideos.links);
+    // if a new video has been added
+    if(keys.length > $scope.sidebarVideos.length){
+      // find sidebar
+      var sidebarElem = angular.element.find('.sidebar-videos')[0];
+      // find new videos
+      for (var i = $scope.sidebarVideos.length; i < keys.length; i++) {
+        console.log('New Video',$scope.sidebarVideos.links[keys[i]]);
+        var vidElem = angular.element('<video class="video individual" autoplay></video>');
+        angular.element(sidebarElem).append(vidElem);
+        attachMediaStream(vidElem[0], $scope.sidebarVideos.links[keys[i]]);
+      }
+      $scope.sidebarVideos.length = keys.length;
+    }
+  };
+
+  $scope.updateStreams = function(){
+    //console.log(WebRTC.getStreams);
+    $timeout(function(){
+      $scope.sidebarVideos.links = WebRTC.getStreams;
+      $scope.setAvideo();
+      $scope.updateStreams();
+    }, 1000);
+  };
+
+
+  $scope.updateStreams();
   $scope.supplantMain = function(video) {
     console.log('Old: ', $scope.main);
     var index = $scope.sidebarVideos.indexOf(video);

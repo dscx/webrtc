@@ -51,13 +51,19 @@ var namespace = socketio.of('/rooms');
       if(!allRooms[roomId.room]){
         allRooms[roomId.room] = [];
       }
-      
+
+      if(!allRooms[roomId.room].counter){
+        allRooms[roomId.room].counter = 1;
+      } else{
+        allRooms[roomId.room].counter++;
+      }
+
+
       var pid = allRooms[roomId.room].length;
       allRooms[roomId.room].push(socket);
 
       var room = roomId.room;
       var otherPids = Array.apply(null, {length: pid}).map(Number.call, Number);
-      console.log(otherPids.slice(-1), "the rest");
       socket.emit('confirm', {pids:otherPids, pid:pid, room:room}); //include PID's
 
       //emits to all on conference the new participants information
@@ -65,8 +71,10 @@ var namespace = socketio.of('/rooms');
       socket.on('disconnect', function(socket){
         if(room !== undefined){
           allRooms[room][pid] = null;
+          allRooms[room].counter--;
           namespace.to(room).emit('left', {pid:pid});
-            if(allRooms[room].length === 0){
+          console.log(allRooms[room].counter, "remaining participants")
+            if(allRooms[room].counter === 0){
               delete allRooms[room];
               var roomHash = cache[room];
               delete cache[room];
@@ -79,22 +87,29 @@ var namespace = socketio.of('/rooms');
 
       //Signalling below
       socket.on('offer', function(info){
-        console.log('forwarding offer');
         var to = allRooms[info.room][info.recipient];
-        to.emit('offer', info);
+        if(to){
+          to.emit('offer', info);
+          console.log('forwarding offer');
+        }
       });
 
         //replies to each offer
       socket.on('answer', function(response){
-        var target = allRooms[response.room][response.pid];
-        target.emit('answer', response);
-        console.info('answering call...');
+        var target = allRooms[response.room][response.recipient];
+        if(target){
+          target.emit('answer', response);
+          console.info('answering call...');
+        }
       });
 
       socket.on('ice', function(info){
-        console.log('forwarding ice');
+        
         var to = allRooms[info.room][info.recipient];
-        to.emit('ice', info);      
+        if(to){
+          to.emit('ice', info);   
+          console.log('forwarding ice');
+        }   
       });
     });
 

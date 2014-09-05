@@ -493,7 +493,22 @@ module.exports = function (grunt) {
         }
       }
     },
+
+      // coveralls: {
+      //   options: {
+      //     // LCOV coverage file relevant to every target
+      //     src: 'coverage-results/lcov.info',
+      //     force: false
+      //   },
+      //   your_target: {
+      //     // Target-specific LCOV coverage file
+      //     src: 'coverage-results/extra-results-*.info'
+      //   },
+      // },
   });
+
+  //grunt.loadNpmTasks('grunt-coveralls');
+  grunt.loadNpmTasks('grunt-karma-coveralls');
 
   // Used for delaying livereload until after server has restarted
   grunt.registerTask('wait', function () {
