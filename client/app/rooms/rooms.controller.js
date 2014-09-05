@@ -38,7 +38,7 @@ angular.module('webrtcApp')
       // find new videos
       for (var i = $scope.sidebarVideos.length; i < keys.length; i++) {
         console.log('New Video',$scope.sidebarVideos.links[keys[i]]);
-        var vidElem = angular.element('<video class="video individual" autoplay data-pid="'+keys[i]+'""></video>');
+        var vidElem = angular.element('<video class="video individual" autoplay data-pid="'+keys[i]+'"></video>');
         angular.element(sidebarElem).append(vidElem);
         attachMediaStream(vidElem[0], $scope.sidebarVideos.links[keys[i]]);
       }
