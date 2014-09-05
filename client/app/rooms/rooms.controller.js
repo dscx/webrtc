@@ -1,6 +1,7 @@
 'use strict';
 angular.module('webrtcApp')
 .controller('RoomController', function($scope, $location, WebRTC, $timeout){
+
   $scope.room = {};
   $scope.room.name = $location.hash();
   $scope.myStream = {};
@@ -42,8 +43,12 @@ angular.module('webrtcApp')
         attachMediaStream(vidElem[0], $scope.sidebarVideos.links[keys[i]]);
       }
       $scope.sidebarVideos.length = keys.length;
-    }
+    } 
   };
+
+  $scope.$on('socket:left', function (ev, data) {
+    console.log('SOMONE LEFT from scope', data);
+  });
 
   $scope.updateStreams = function(){
     //console.log(WebRTC.getStreams);
@@ -72,5 +77,7 @@ angular.module('webrtcApp')
   $scope.toggleMyAudio = function(){
     WebRTC.toggleAudio();
   };
+
   console.log($scope.room.name);
+
 });
