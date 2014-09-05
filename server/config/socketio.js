@@ -68,11 +68,11 @@ var namespace = socketio.of('/rooms');
 
       //emits to all on conference the new participants information
       socket.to(room).emit('new', {pid:pid});
-      socket.on('disconnect', function(socket){
+      socket.on('disconnect', function(){
         if(room !== undefined){
           allRooms[room][pid] = null;
           allRooms[room].counter--;
-          namespace.to(room).emit('left', {pid:pid});
+          socket.to(room).emit('left', {pid:pid});
           console.log(allRooms[room].counter, "remaining participants")
             if(allRooms[room].counter === 0){
               delete allRooms[room];
