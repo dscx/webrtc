@@ -495,6 +495,8 @@ module.exports = function (grunt) {
     },
   });
 
+  grunt.loadNpmTasks('grunt-coveralls');
+
   // Used for delaying livereload until after server has restarted
   grunt.registerTask('wait', function () {
     grunt.log.ok('Waiting for server reload...');
