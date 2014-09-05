@@ -73,7 +73,7 @@ var namespace = socketio.of('/rooms');
           allRooms[room][pid] = null;
           allRooms[room].counter--;
           namespace.to(room).emit('left', {pid:pid});
-          console.log(allRooms[room].length, "remaining participants")
+          console.log(allRooms[room].counter, "remaining participants")
             if(allRooms[room].counter === 0){
               delete allRooms[room];
               var roomHash = cache[room];
