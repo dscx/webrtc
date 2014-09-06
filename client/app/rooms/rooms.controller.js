@@ -82,7 +82,6 @@ angular.module('webrtcApp')
   $scope.$on('$destroy', function(){
     $timeout.cancel($scope.promise.update);
     WebRTC.destroy();
-    alert('destroyed');
   });
   console.log($scope.room.name);
 
