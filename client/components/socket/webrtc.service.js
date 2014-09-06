@@ -9,7 +9,7 @@ angular.module('webrtcApp')
   var socket = socketFactory({
     ioSocket:ioSocket
   });
-
+  socket.forward('left');
 
   return {
     socket:socket
