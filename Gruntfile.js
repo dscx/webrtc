@@ -9,9 +9,8 @@ module.exports = function (grunt) {
     localConfig = {};
   }
 
-
   grunt.loadNpmTasks('grunt-karma-coveralls');
-  
+
   // Load grunt tasks automatically, when needed
   require('jit-grunt')(grunt, {
     express: 'grunt-express-server',
