@@ -5,14 +5,15 @@
   -->
 </style>
 
-<div class="content">
+<div class="row">
 
-  <div class="col1">
+  <div class="chat-container" ng-class="{show: showChat}">
     <div class="controls">
       <ul>
         <li ng-click="toggleMyVideo()">Toggle Video</li>
         <li ng-click="toggleMyAudio()">Toggle Audio</li>
       </ul>
+      <div class="chat-toggle" ng-model="showChat" ng-click="showChat = !showChat"></div>
     </div>
     <div class="chat">
       <div class="messages">
@@ -24,18 +25,14 @@
     </div>
   </div>
 
-  <div class="col2">
-    <div class="presentation">
-      <div class="vid">
-        <video class="video main" autoplay muted></video>
-      </div>
+  <div class="col-sm-9 presentation">
+    <div class="vid">
+      <video class="video main" autoplay muted></video>
     </div>
   </div>
 
-  <div class="col3">
-    <div class="sidebar-videos">
+  <div class="col-sm-3 sidebar-videos">
       <!-- <video ng-repeat="video in sidebarVideos" ng-click="supplantMain(video)" class="video individual"></video> -->
-    </div>
   </div>
 
 </div>

@@ -1,8 +1,11 @@
-.whiteboard {
+.presentation {
+  height: 100vh;
+  padding-right: 0;
 }
 .sidebar-videos {
+  padding-left: 0;
 }
-.presentation {
+.presentation .vid {
   height: 100%;
 }
 ul {
@@ -36,7 +39,7 @@ li {
   display: block;
   z-index: 0;
   width: 100%;
-  height: auto;
+  max-height: 100%;
 }
 video {
   display: block;
@@ -57,27 +60,31 @@ video {
   list-style-type: none;
   cursor: pointer;
 }
-.col1 {
+.chat-container {
   min-width: 240px;
   margin: 0px;
   padding: 0px;
-  float: left;
   width: 24%;
+  top: 25px;
+  left: -24%;
+  z-index: 1;
   background-color: #222;
+  opacity: 0.9;
   height: calc(100vh - 50px);
+  position: absolute;
+  transition: all 1s ease;
 }
-.col2 {
-  font-weight: normal !important;
-  color: grey;
-  margin: 0;
-  float: left;
-  width: 56%;
-  height: calc(100vh - 50px);
+.chat-container.show {
+  left: 0;
 }
-.col3 {
-  width: 20%;
-  float: left;
-  height: calc(100vh - 50px);
+.chat-toggle {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: #555;
+  top: 0;
+  right: -40px;
+  border-radius: 0 5px 5px 0;
 }
 .chat {
   padding-top: 0px;
