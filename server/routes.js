@@ -54,13 +54,12 @@ module.exports = function(app) {
         if(room){
           res.send({url:r});
         } else {
-          res.send(404, "meeting over");
+          res.send({error: "meetingOver"});
         }
       })
     }
     else{ 
-      console.log('SENT 404');
-      res.redirect('/*');
+      res.send({error: 'notFound'});
     }
   });
 

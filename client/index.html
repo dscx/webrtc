@@ -35,7 +35,10 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div ui-view=""></div>
+    <div ng-controller="NavbarCtrl">
+      <nav-bar></nav-bar>
+    </div>
+    <div ui-view></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -89,6 +92,7 @@
           <script src="components/modal/modal.service.js"></script>
           <script src="components/mongoose-error/mongoose-error.directive.js"></script>
           <script src="components/navbar/navbar.controller.js"></script>
+          <script src="components/navbar/navbar.directive.js"></script>
           <script src="components/socket/adapter.js"></script>
           <script src="components/socket/socket.service.js"></script>
           <script src="components/socket/webrtc.service.js"></script>

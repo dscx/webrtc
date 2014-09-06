@@ -10,12 +10,12 @@ angular.module('webrtcApp')
     ioSocket:ioSocket
   });
   socket.forward('left');
-
+  socket.forward('invalid-room');
   return {
     socket:socket
   };
 })
-.factory('WebRTC', function(RtcSock){
+.factory('WebRTC', function(RtcSock, $timeout){
   var room = null;
   //var videoDiv = document.getElementById('videos');
   var contraint = {video:true, audio:true};
@@ -24,6 +24,7 @@ angular.module('webrtcApp')
   var myPid;
   var myStream = null;
   var myRTClocal = [];
+  var timeouts = {};
 
   function joinRoom(rm){
     room = rm;
@@ -65,7 +66,7 @@ angular.module('webrtcApp')
 
   function addLocal(pc){
     if(!myStream){
-      setTimeout(function(){
+      timeouts.addLocal = $timeout(function(){
         addLocal(pc);
       }, 500);
     } else {
@@ -110,7 +111,7 @@ angular.module('webrtcApp')
       // !myRTClocal[pid]
       //media(pc, pid);
       if(!pc.haslocal){
-        setTimeout(function(){
+        timeouts.hasLocal = $timeout(function(){
           sendOffer(callback);
         },500);
       } else {
@@ -163,7 +164,7 @@ angular.module('webrtcApp')
         console.log('adding ice');
         pc.addIceCandidate(new RTCIceCandidate(candidate));
       } else {
-        setTimeout(function(){
+        timeouts.hasSDP = $timeout(function(){
           onRemoteIceCandidates(candidate);
         }, 100);
       }
@@ -318,7 +319,11 @@ angular.module('webrtcApp')
       !(stream.getVideoTracks()[0].enabled);
   }
 
-  
+  function destroy(){
+    for(var p in timeouts){
+      $timeout.cancel(timeouts[p]);
+    }
+  }
   return {
     join:joinRoom,
     getStreams:streams,
@@ -327,6 +332,7 @@ angular.module('webrtcApp')
     toggleAudio:toggleAudio,
     toggleVideo:toggleVideo,
     toggleAudioStream:toggleAudioStream,
-    toggleVideoStream:toggleVideoStream
+    toggleVideoStream:toggleVideoStream,
+    destroy:destroy
   };
 });
