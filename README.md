@@ -1,4 +1,4 @@
-webrtc - video chat
+Meeting.io
 ======
 
 [![Build Status](https://travis-ci.org/HRR1-ddgz/webrtc.svg?branch=master)](https://travis-ci.org/HRR1-ddgz/webrtc)
@@ -15,7 +15,7 @@ webrtc - video chat
 
 ## Usage
 
-Use our app as a light-weight alternative to google hangouts or skype. No signup required. Click and go.
+Use Meeting.io as a light-weight alternative to google hangouts or skype. No signup required. Click and go.
 
 ## Requirements
 
