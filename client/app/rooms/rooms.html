@@ -4,37 +4,40 @@
           background-color: #080808;}
   -->
 </style>
-<ul class="slide-out">
-  <li ng-click="toggleMyVideo()">Toggle Video</li>
-  <li ng-click="toggleMyAudio()">Toggle Audio</li>
-</ul>
-<div class="chat">
-  <div class="header-chat">
-    <h5>Chat</h5>
-    <div>X</div>
-  </div>
-  <div class="main-chat">
-    <p>This is the chat area</p>
-    <p>Put whatever the heck you want in it</p>
-    <p>Fo' sho'</p>
-  </div>
-  <form class="new-chat">
-    <input type="text">
-    <input type="submit"/>
-  </form>
-</div>
-<div class="row">
-  <div class="col-sm-9">
-    <div class="whiteboard hide">
-      <p>This is our whiteboard</p>
-      <p>we can put all sorts of stuff in it</p>
-    </div>
 
-    <div class="presentation">
-      <video class="video main" autoplay muted></video>
+<div class="content">
+
+  <div class="col1">
+    <div class="controls">
+      <ul>
+        <li ng-click="toggleMyVideo()">Toggle Video</li>
+        <li ng-click="toggleMyAudio()">Toggle Audio</li>
+      </ul>
+    </div>
+    <div class="chat">
+      <div class="messages">
+      </div>
+      <div class="message-input">
+        <textarea class="chat-text boxsizingBorder" type="text"></textarea>
+        <button type="submit" class="chat-send-button">Send</button>
+      </div>
     </div>
   </div>
-  <div class="col-sm-3 sidebar-videos">
-    <!-- <video ng-repeat="video in sidebarVideos" ng-click="supplantMain(video)" class="video individual"></video> -->
+
+  <div class="col2">
+    <div class="presentation">
+      <div class="vid">
+        <video class="video main" autoplay muted></video>
+      </div>
+    </div>
   </div>
+
+  <div class="col3">
+    <div class="sidebar-videos">
+      <!-- <video ng-repeat="video in sidebarVideos" ng-click="supplantMain(video)" class="video individual"></video> -->
+    </div>
+  </div>
+
 </div>
+
+

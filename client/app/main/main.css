@@ -15,6 +15,7 @@ body {
 }
 
 .navigation {
+    margin-bottom: 0px !important;
     background: rgba(44,44,44,0.5) !important;
     color: #FFF;
     border: none;
