@@ -4,7 +4,11 @@ angular.module('webrtcApp')
   .controller('NavbarCtrl', function ($scope, $location) {
     $scope.menu = [{
     }];
-
+    $scope.isHome = function(){
+      var bool = $location.path() === '/';
+      console.log(bool);
+      return bool;
+    };
     $scope.isCollapsed = true;
     $scope.room = { 
       inroom:false, 
