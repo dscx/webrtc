@@ -21,14 +21,14 @@ module.exports = function(app) {
 
       if(err){
         console.log(err);
-        res.send(500);
+        res.status(500).send();
         return;
       }
       rooms.create(hash)
         .then(function(room){
           var url = Math.floor(Math.random()*16777215).toString(16);
           cache[url] = room.room;
-          res.send({url:url, room:room.room});          
+          res.json({url:url, room:room.room});          
         });
     });
   });
@@ -39,23 +39,19 @@ module.exports = function(app) {
   
   app.use('/search', function(req, res){
     var r = req.query.room;
-    if(req.headers.referer === undefined){
-      res.redirect('/?room='+ r);
-      return;
-    }
 
     var roomHash = cache[r];
     if(roomHash !== undefined){
       rooms.find(roomHash).then(function(room){
         if(room){
-          res.send({url:r});
+          res.json({url:r});
         } else {
-          res.send({error: "meetingOver"});
+          res.json({error: "meetingOver"});
         }
       })
     }
     else{ 
-      res.send({error: 'notFound'});
+      res.json({error: 'notFound'});
     }
   });
 
