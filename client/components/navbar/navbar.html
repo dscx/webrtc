@@ -1,4 +1,4 @@
-<div class="navigation navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
+<div class="navigation navbar navbar-default navbar-static-top">
   <div class="container">
     <div class="navbar-header">
       <!-- <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
@@ -8,7 +8,14 @@
         <span class="icon-bar"></span>
       </button> -->
       <a href="/" class="navbar-brand logo">Video Chat</a>
-      <form class="form"><input /><button class="submit-button">Submit</button></form>
+      <form class="form room-search">
+        <input type="text" class="room-lookup" ng-model="room.search"/>
+        <button class="submit-button">Submit</button>
+        <div class="room-not-found" ng-if="room.error">
+          <span class="error" ng-if="room.notFound">Room not found</span>
+          <span class="error" ng-if="room.meetingOver">Meeting has ended</span>
+        </div>
+      </form>
     </div>
    <!-- <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
       <ul class="nav navbar-nav">

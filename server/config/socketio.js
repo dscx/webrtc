@@ -46,6 +46,10 @@ var namespace = socketio.of('/rooms');
           process.env.DOMAIN;
     
     socket.on('room', function(roomId){
+      console.log('Joining participant to', roomId);
+      if(!cache[roomId.room]){
+        socket.emit('invalid-room');
+      }
       socket.join(roomId.room);
 
       if(!allRooms[roomId.room]){

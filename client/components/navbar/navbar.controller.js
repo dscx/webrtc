@@ -9,6 +9,18 @@ angular.module('webrtcApp')
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
+    $scope.room = { 
+      inroom:false, 
+      search:'', 
+      error:false,
+      notFound:false,
+      meetingOver:false,
+    };
+    $scope.resetError = function(){
+      $scope.room.error = false;
+      $scope.room.notFound = false;
+      $scope.room.meetingOver = false;
+    };
 
     $scope.logout = function() {
       Auth.logout();
