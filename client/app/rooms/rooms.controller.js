@@ -6,7 +6,6 @@ angular.module('webrtcApp')
   $scope.room.name = $location.path().replace('/', '');
   $scope.myStream = {};
   $scope.main = {};
-  $scope.meetingLink = 'http://localhost:9000/search?room='+$scope.room.name;
   WebRTC.join($scope.room.name);
   //using settimeout to wait until user stream is available
   $scope.setInitial = function(){
