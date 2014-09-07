@@ -35,7 +35,7 @@ function onConnect(socket) {
 
 module.exports = function (socketio, cache) {
 
-console.log("eneter")
+console.log("enter")
 var namespace = socketio.of('/rooms');
 
  //joins namespace when user enters room
@@ -65,6 +65,7 @@ var namespace = socketio.of('/rooms');
 
       var pid = allRooms[roomId.room].length;
       allRooms[roomId.room].push(socket);
+      console.log(pid);
 
       var room = roomId.room;
       var otherPids = Array.apply(null, {length: pid}).map(Number.call, Number);
@@ -116,7 +117,6 @@ var namespace = socketio.of('/rooms');
         }   
       });
     });
-
   });
 
   socketio.on('connection', function (socket) {

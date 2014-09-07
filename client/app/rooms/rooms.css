@@ -15,7 +15,7 @@ ul {
 li {
   color: #aaa;
   margin: 0px;
-  padding-right: 12px;
+  padding-right: 8px;
   padding-top: 0px;
   padding-left: 0px;
   padding-bottom: 0px;
@@ -58,6 +58,8 @@ video {
 }
 .controls > ul > li {
   list-style-type: none;
+}
+.toggleable {
   cursor: pointer;
 }
 .chat-container {
@@ -104,11 +106,25 @@ video {
   padding-left: 8px;
   margin: 0px;
 }
-.messages {
+.messages-container {
+  position: relative;
+  z-index: 0;
   padding: 0px;
   margin: 0px;
+  height: calc(100vh - 226px);
   background-color: #444;
-  height: calc(100vh - 190px);
+}
+.messages {
+  z-index: -100;
+  overflow: scroll;
+  height: calc(100vh - 226px);
+}
+.messages-shadow {
+  z-index: 100;
+  padding: 0px;
+  margin: 0px;
+  background-color: transparent;
+  height: calc(100vh - 226px);
   -moz-box-shadow: inset 0 0 10px #000;
   -webkit-box-shadow: inset 0 0 10px #000;
   box-shadow: inset 0 0 10px #000;
@@ -140,4 +156,35 @@ video {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+.styleA {
+  position: relative;
+  z-index: -1;
+  font-weight: normal !important;
+  color: #CCC;
+  background-color: #414141;
+  padding: 4px;
+  margin: 0;
+}
+.styleB {
+  position: relative;
+  z-index: -1;
+  font-weight: normal !important;
+  color: #CCC;
+  background-color: #373737;
+  padding: 4px;
+  margin: 0;
+}
+.un {
+  color: #999;
+  padding-left: 4px;
+  margin-top: 8px;
+  margin-left: 4px;
+  width: 90px;
+}
+.youAre {
+  font-size: 14px;
+  color: #999;
+  margin-top: 4px;
+  margin-right: 4px;
 }
