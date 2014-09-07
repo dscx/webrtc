@@ -77,15 +77,20 @@ var namespace = socketio.of('/rooms');
           allRooms[room][pid] = null;
           allRooms[room].counter--;
           socket.to(room).emit('left', {pid:pid});
-          console.log(allRooms[room].counter, "remaining participants")
-            if(allRooms[room].counter === 0){
-              delete allRooms[room];
-              var roomHash = cache[room];
-              delete cache[room];
-              closeRoom(roomHash);
+          console.log(allRooms[room].counter, "remaining participants");
 
-              console.log("Room Closed");
-           }
+          //Waits 90 seconds before closing meeting room
+            setTimeout(function(){
+              if(allRooms[room].counter === 0){
+
+                delete allRooms[room];
+                var roomHash = cache[room];
+                delete cache[room];
+                closeRoom(roomHash);
+
+                console.log("Room Closed");
+             }
+           }, 90000);
         }
       });
 

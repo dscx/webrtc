@@ -33,6 +33,8 @@ describe('Accessing Rooms', function(){
         .then(function(room){
           room.room.should.equal(dup.room);
           done();
+        }, function(err){
+          return done(err);
         });
     });
 
