@@ -1,11 +1,10 @@
-# Project Name #
-
+# Meeting.io #
  
 ## Heading ##
-  > Web RTC Video Chat
+  > WebRTC Chat
 
 ## Summary ##
-  > Stop wasting time setting up your video conferences, and use our solution. It's just a click away.
+  > Stop wasting time setting up your video conferences, and use Meeting.io - It's just a click away.
 
 ## What's the Problem? ##
   > Account creation. Broken links. Choppy video. Video conferencing is a mess.
@@ -16,7 +15,7 @@
   > "We are striving for a simple, light and easy to use video confercing platform that rivals anthing you've used thus far."
 
 ## How to Get Started ##
-  Head over to http://webrtcvideo-hrr1.herokuapp.com/ and click create!
+  Head over to http://meetingio.herokuapp.com/ and click create!
 
 ## What are our users saying? ##
   > "It's so easy"

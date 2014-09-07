@@ -1,8 +1,11 @@
-.whiteboard {
+.presentation {
+  height: 100vh;
+  padding-right: 0;
 }
 .sidebar-videos {
+  padding-left: 0;
 }
-.presentation {
+.presentation .vid {
   height: 100%;
 }
 ul {
@@ -10,7 +13,7 @@ ul {
   margin: 0;
 }
 li {
-  color: #555;
+  color: #aaa;
   margin: 0px;
   padding-right: 12px;
   padding-top: 0px;
@@ -36,7 +39,7 @@ li {
   display: block;
   z-index: 0;
   width: 100%;
-  height: auto;
+  max-height: 100%;
 }
 video {
   display: block;
@@ -57,27 +60,42 @@ video {
   list-style-type: none;
   cursor: pointer;
 }
-.col1 {
+.chat-container {
   min-width: 240px;
   margin: 0px;
   padding: 0px;
-  float: left;
   width: 24%;
-  background-color: #222;
+  top: 25px;
+  left: -24%;
+  z-index: 1;
+  background-color: #333;
+  opacity: 0.9;
   height: calc(100vh - 50px);
+  position: absolute;
+  transition: all 1s ease;
 }
-.col2 {
-  font-weight: normal !important;
-  color: grey;
-  margin: 0;
-  float: left;
-  width: 56%;
-  height: calc(100vh - 50px);
+.chat-container.show {
+  left: 0;
 }
-.col3 {
-  width: 20%;
-  float: left;
-  height: calc(100vh - 50px);
+.chat-container.show .chat-toggle svg {
+  transform: rotate(0deg);
+}
+.chat-toggle {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  padding: 10px 0;
+  background: #555;
+  top: 0;
+  right: -40px;
+  text-align: center;
+  border-radius: 0 5px 5px 0;
+}
+.chat-toggle svg {
+  transform: rotate(180deg);
+  transition: all 1s ease;
+  fill: white;
+  height: 20px;
 }
 .chat {
   padding-top: 0px;
@@ -89,7 +107,7 @@ video {
 .messages {
   padding: 0px;
   margin: 0px;
-  background-color: #333;
+  background-color: #444;
   height: calc(100vh - 190px);
   -moz-box-shadow: inset 0 0 10px #000;
   -webkit-box-shadow: inset 0 0 10px #000;
@@ -101,17 +119,17 @@ video {
 .chat-text {
   color: #999;
   border: 1px solid #555;
-  background-color: #333;
+  background-color: #444;
   padding: 4px;
   margin: 0;
 }
 .chat-send-button {
   background-color: #333 !important;
   border-radius: 4px;
-  border: 1px solid #444;
+  border: 1px solid #666;
   width: 60px;
   height: 24px;
-  color: #777;
+  color: #aaa;
   padding: 0;
   float: right;
   margin-bottom: 8px;
