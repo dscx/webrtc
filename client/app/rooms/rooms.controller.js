@@ -35,7 +35,7 @@ angular.module('webrtcApp')
       var sidebarElem = angular.element.find('.sidebar-videos')[0];
       // find new videos
       for (var i = $scope.sidebarVideos.length; i < keys.length; i++) {
-        var vidElem = angular.element('<video class="video individual" autoplay data-pid="'+keys[i]+'"></video>');
+        var vidElem = angular.element('<video class="video individual" autoplay data-pid="'+keys[i]+'" ng-click="console.log(\'hi\')"></video>');
         angular.element(sidebarElem).append(vidElem);
         attachMediaStream(vidElem[0], $scope.sidebarVideos.links[keys[i]]);
       }
@@ -62,13 +62,13 @@ angular.module('webrtcApp')
 
 
   $scope.updateStreams();
-  $scope.supplantMain = function(video) {
-    console.log('Old: ', $scope.main);
-    var index = $scope.sidebarVideos.indexOf(video);
-    $scope.sidebarVideos[index] = $scope.main;
-    $scope.main = video;
-    console.log('New: ', $scope.main);
-  };
+
+  angular.element('.sidebar-videos').on('click', '.video.individual', function(event){
+    var clicked = event.target.src;
+    var main = angular.element.find('.video.main')[0].src;
+    angular.element.find('.video.main')[0].src = clicked;
+    event.target.src = main;
+  });
 
   //Pauses own video streams
   $scope.toggleMyVideo = function(){
