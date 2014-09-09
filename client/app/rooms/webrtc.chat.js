@@ -1,28 +1,28 @@
 'use strict';
-angular.module('webrtcApp')
-.factory('socket', function ($rootScope) {
-  var socket = io('http://localhost:9000');
-  return {
-    on: function (eventName, callback) {
-      socket.on(eventName, function () {  
-        var args = arguments;
-        $rootScope.$apply(function () {
-          callback.apply(socket, args);
-        });
-      });
-    },
-    emit: function (eventName, data, callback) {
-      socket.emit(eventName, data, function () {
-        var args = arguments;
-        $rootScope.$apply(function () {
-          if (callback) {
-            callback.apply(socket, args);
-          }
-        });
-      })
-    }
-  };
-});
+// angular.module('webrtcApp')
+// .factory('socket', function ($rootScope) {
+//   var socket = io('http://localhost:9000');
+//   return {
+//     on: function (eventName, callback) {
+//       socket.on(eventName, function () {  
+//         var args = arguments;
+//         $rootScope.$apply(function () {
+//           callback.apply(socket, args);
+//         });
+//       });
+//     },
+//     emit: function (eventName, data, callback) {
+//       socket.emit(eventName, data, function () {
+//         var args = arguments;
+//         $rootScope.$apply(function () {
+//           if (callback) {
+//             callback.apply(socket, args);
+//           }
+//         });
+//       })
+//     }
+//   };
+// });
 
 function ChatController($scope, socket) {
   $scope.href = $(location).attr("href");
@@ -36,7 +36,7 @@ function ChatController($scope, socket) {
   });
 
   socket.on('connect', function() {
-    socket.reconnect();
+    socket.socket.reconnect();
     socket.emit('roomNumber', $scope.roomNumber);
   });
 

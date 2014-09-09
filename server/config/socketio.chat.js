@@ -9,6 +9,7 @@ module.exports.listen = function(app) {
     console.log("Chat: Joined");
 
     socket.on('roomNumber', function(roomNumber) {
+      console.log("ROOM");
       socket.join(roomNumber);
       if (!namesUsed.hasOwnProperty(roomNumber)) {
         namesUsed[roomNumber] = [];
