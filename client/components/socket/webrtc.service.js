@@ -24,7 +24,19 @@ angular.module('webrtcApp')
   var myPid;
   var myStream = null;
   var myRTClocal = [];
+  var error = {
+    codes:['PERMISSION_DENIED', 'NOT_SUPPORTED_ERROR', 'MANDATORY_UNSATISFIED_ERROR']
+  };
+  function getErrString(err){
+    var codes = error.codes;
+    for(var i = 0; i < codes.length; i++){
+      if(err[codes[i]] !== undefined){
+        return codes[i];
+      }
+    }
 
+    return 'UNKOWN';
+  }
   function joinRoom(rm){
     room = rm;
     //Connects to meeting room
@@ -34,33 +46,31 @@ angular.module('webrtcApp')
   RtcSock.socket.on('error', function(err){
     trace('SOCK ERROR ===>' + err);
   });
-  //Creates element that stream will be stored in
-  // function createElement(){
-  //   var elem = document.createElement('video');
-  //   elem.style="height:500px; width:500px";
-  //   elem.autoplay = true;
-  //   elem.addEventListener('loadedmetadata', function(){
-  //     trace("Remote video currentSrc: " + this.currentSrc +
-  //         ", videoWidth: " + this.videoWidth +
-  //         "px,  videoHeight: " + this.videoHeight + "px");
-  //   });
-  //   videoDiv.appendChild(elem);
-  //   return elem;
-  // }
 
   //Gets own media stream, and appends onto the dom
   var myStreamCounter = 0;
   function myMedia(){
-    //var elem = createElement();
-    //elem.id = "my-video";
     myStreamCounter++;
     getUserMedia(contraint, function(stream){
       myStream = stream;
-      trace('created stream' + stream.id);
-      myRTClocal[myPid+'id:'+myStreamCounter]=stream;
+      if(hasVideo(stream)){
+        trace('created stream' + stream.id);
+        myRTClocal[myPid+'id:'+myStreamCounter]=stream;
+      }
     }, function(err){
-      trace('ERROR: '+err);
+      error.video = getErrString(err);
     });
+  }
+
+  //Temporary handler for users with no video stream
+  //Sets an error object that the rooms controller will check
+  function hasVideo(stream){
+    if(stream.getVideoTracks().length < 1){
+      error.video = 'No video tracks';
+      return false; 
+    } else {
+      return true;
+    }
   }
 
   function addLocal(pc){

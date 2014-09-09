@@ -12,10 +12,14 @@ angular.module('webrtcApp')
   $scope.setInitial = function(){
     var stream = WebRTC.myStream();
     console.log('stream', stream);
-    if(!stream){
+    if(stream === undefined && WebRTC.error.video === undefined){
       $timeout(function(){
         $scope.setInitial();
       }, 1000);
+    } else if(WebRTC.error.video !== undefined){
+      alert('Video setup failed with error: ' + WebRTC.error.video +
+        ' video is required to use this service');
+      $location.path('/');
     } else {
       $scope.main = stream;
       $scope.myStream = stream;
