@@ -1,7 +1,7 @@
-Meeting.io
+OurMeeting
 ======
 
-[![Build Status](https://travis-ci.org/HRR1-ddgz/webrtc.svg?branch=master)](https://travis-ci.org/HRR1-ddgz/webrtc) | [![Coverage Status](https://img.shields.io/coveralls/HRR1-ddgz/webrtc.svg)](https://coveralls.io/r/HRR1-ddgz/webrtc)
+[![Build Status](https://travis-ci.org/HRR1-ddgz/webrtc.svg?branch=master)](https://travis-ci.org/HRR1-ddgz/webrtc) [![Coverage Status](https://img.shields.io/coveralls/HRR1-ddgz/webrtc.svg)](https://coveralls.io/r/HRR1-ddgz/webrtc)
 
 =======
 
