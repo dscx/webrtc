@@ -1,6 +1,17 @@
 'use strict';
+angular.module('webrtcApp')
+// function ChatController($scope, socket) {
+//   $scope.href = $(location).attr("href");
+//   $scope.roomNumber = $scope.href.substr($scope.href.lastIndexOf('/') + 1);
+//   $scope.myUsername = '';
+  
+//   $('.chat-container').mouseover(function() {
+//     if ($scope.myUsername.length === 0) {
+//       socket.emit('roomNumber', $scope.roomNumber);
+//     }
+//   });
 
-function ChatController($scope, socket) {
+  .controller('ChatController', function($scope, socket) {
   $scope.href = $(location).attr("href");
   $scope.roomNumber = $scope.href.substr($scope.href.lastIndexOf('/') + 1);
   $scope.myUsername = '';
@@ -48,7 +59,7 @@ function ChatController($scope, socket) {
     return false;
   });
 
-  function appendMessage(username, message) {
+   $scope.appendMessage = function(username, message) {
     var previousStyle = $('.messages').children().last().attr('class');
     if (previousStyle === 'styleA') {
       var currentStyle = 'styleB';
