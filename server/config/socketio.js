@@ -9,7 +9,7 @@
 var config = require('./environment');
 var db = require('../api/rooms/rooms.controller.js');
 
-var allRooms = {};
+
 
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
@@ -35,11 +35,12 @@ function onConnect(socket) {
 
 module.exports = function (socketio, cache) {
 
-console.log("enter")
+console.log("enter");
 var namespace = socketio.of('/rooms');
-
+var allRooms = {};
  //joins namespace when user enters room
  namespace.on('connection', function(socket){
+
     console.log('someone connected to the namespace');
     socket.address = socket.handshake.address !== null ?
           socket.handshake.address.address + ':' + socket.handshake.address.port :

@@ -24,7 +24,7 @@ angular.module('webrtcApp')
   var myPid;
   var myStream = null;
   var myRTClocal = [];
-
+  var timeouts = {};
   var error = {
     codes:['PERMISSION_DENIED', 'NOT_SUPPORTED_ERROR', 'MANDATORY_UNSATISFIED_ERROR']
   };
@@ -350,6 +350,7 @@ angular.module('webrtcApp')
     toggleVideo:toggleVideo,
     toggleAudioStream:toggleAudioStream,
     toggleVideoStream:toggleVideoStream,
-    destroy:destroy
+    destroy:destroy,
+    error:error
   };
 });
