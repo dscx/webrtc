@@ -6,7 +6,7 @@ module.exports.listen = function(app) {
   io = socketio.listen(app);
   io.on('connection', function(socket) {
 
-    console.log("JOINED");
+    console.log("Chat: Joined");
 
     socket.on('roomNumber', function(roomNumber) {
       socket.join(roomNumber);
@@ -29,8 +29,7 @@ module.exports.listen = function(app) {
     });
 
     socket.on('message', function(obj) {
-      console.log("MESSAGE RECEIVED.");
-      console.log(namesUsed[obj.roomNumber])
+      console.log("Chat: Message received");
       socket.broadcast.to(obj.roomNumber).emit('message', {user: obj.user, text: obj.text});   
     });
   });

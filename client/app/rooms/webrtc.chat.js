@@ -41,12 +41,12 @@ function ChatController($scope, socket) {
   });
 
   socket.on('message', function(obj) {
-    console.log("MESSAGE");
+    console.log("Chat: Message Received");
     appendMessage(obj.user, obj.text);
   });
 
   socket.on('user', function(obj) {
-    console.log("USER");
+    console.log("Chat: User");
     if ($scope.myUsername === "") {
       $scope.myUsername = obj.user;
       console.log($scope.myUsername);
@@ -60,7 +60,7 @@ function ChatController($scope, socket) {
   });
   
   $('.chat-send-button').on('click', function() {
-    console.log("CLICK");
+    console.log("Chat: Submit clicked");
     var message = $('.chat-text').val();
     appendMessage($scope.myUsername, message);
     socket.emit('message', {
