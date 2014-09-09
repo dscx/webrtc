@@ -9,6 +9,8 @@ module.exports = function (grunt) {
     localConfig = {};
   }
 
+  grunt.loadNpmTasks('grunt-karma-coveralls');
+
   // Load grunt tasks automatically, when needed
   require('jit-grunt')(grunt, {
     express: 'grunt-express-server',
@@ -413,12 +415,14 @@ module.exports = function (grunt) {
     },
 
     // Test settings
+    //Enable when karma tests are created
+    /*
     karma: {
       unit: {
         configFile: 'karma.conf.js',
         singleRun: true
       }
-    },
+    }, */
 
     mochaTest: {
       options: {
@@ -508,7 +512,7 @@ module.exports = function (grunt) {
   });
 
   //grunt.loadNpmTasks('grunt-coveralls');
-  grunt.loadNpmTasks('grunt-karma-coveralls');
+
 
   // Used for delaying livereload until after server has restarted
   grunt.registerTask('wait', function () {
@@ -578,7 +582,7 @@ module.exports = function (grunt) {
         'concurrent:test',
         'injector',
         'autoprefixer',
-        'karma'
+        //'karma'
       ]);
     }
 

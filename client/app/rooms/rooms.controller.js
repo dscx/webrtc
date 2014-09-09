@@ -3,10 +3,9 @@ angular.module('webrtcApp')
 .controller('RoomController', function($scope, $location, WebRTC, $timeout){
 
   $scope.room = {};
-  $scope.room.name = $location.hash();
+  $scope.room.name = $location.path().replace('/', '');
   $scope.myStream = {};
   $scope.main = {};
-  $scope.meetingLink = 'http://localhost:9000/search?room='+$scope.room.name;
   WebRTC.join($scope.room.name);
   //using settimeout to wait until user stream is available
   $scope.setInitial = function(){
@@ -41,8 +40,7 @@ angular.module('webrtcApp')
       var sidebarElem = angular.element.find('.sidebar-videos')[0];
       // find new videos
       for (var i = $scope.sidebarVideos.length; i < keys.length; i++) {
-        console.log('New Video',$scope.sidebarVideos.links[keys[i]]);
-        var vidElem = angular.element('<video class="video individual" autoplay data-pid="'+keys[i]+'"></video>');
+        var vidElem = angular.element('<video class="video individual" autoplay data-pid="'+keys[i]+'" ng-click="console.log(\'hi\')"></video>');
         angular.element(sidebarElem).append(vidElem);
         attachMediaStream(vidElem[0], $scope.sidebarVideos.links[keys[i]]);
       }
@@ -51,16 +49,17 @@ angular.module('webrtcApp')
   };
 
   $scope.$on('socket:left', function (ev, data) {
-    console.log('SOMONE LEFT', data);
     var removeVid = angular.element.find('.video.individual[data-pid='+ data.pid +']')[0];
     angular.element(removeVid).remove();
   });
-
+  $scope.$on('socket:invalid-room', function(){
+    $scope.$destroy();
+    $location.path('/');
+  });
+  $scope.promise = {};
   $scope.updateStreams = function(){
-    //console.log(WebRTC.getStreams);
-    $timeout(function(){
+    $scope.promise.update = $timeout(function(){
       $scope.sidebarVideos.links = WebRTC.getStreams;
-      console.log($scope.sidebarVideos.links);
       $scope.setAvideo();
       $scope.updateStreams();
     }, 1000);
@@ -68,13 +67,13 @@ angular.module('webrtcApp')
 
 
   $scope.updateStreams();
-  $scope.supplantMain = function(video) {
-    console.log('Old: ', $scope.main);
-    var index = $scope.sidebarVideos.indexOf(video);
-    $scope.sidebarVideos[index] = $scope.main;
-    $scope.main = video;
-    console.log('New: ', $scope.main);
-  };
+
+  angular.element('.sidebar-videos').on('click', '.video.individual', function(event){
+    var clicked = event.target.src;
+    var main = angular.element.find('.video.main')[0].src;
+    angular.element.find('.video.main')[0].src = clicked;
+    event.target.src = main;
+  });
 
   //Pauses own video streams
   $scope.toggleMyVideo = function(){
@@ -84,7 +83,10 @@ angular.module('webrtcApp')
   $scope.toggleMyAudio = function(){
     WebRTC.toggleAudio();
   };
-
+  $scope.$on('$destroy', function(){
+    $timeout.cancel($scope.promise.update);
+    WebRTC.destroy();
+  });
   console.log($scope.room.name);
 
 });

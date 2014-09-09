@@ -35,7 +35,7 @@ function onConnect(socket) {
 
 module.exports = function (socketio, cache) {
 
-console.log("eneter")
+console.log("enter")
 var namespace = socketio.of('/rooms');
 
  //joins namespace when user enters room
@@ -46,6 +46,10 @@ var namespace = socketio.of('/rooms');
           process.env.DOMAIN;
     
     socket.on('room', function(roomId){
+      console.log('Joining participant to', roomId);
+      if(!cache[roomId.room]){
+        socket.emit('invalid-room');
+      }
       socket.join(roomId.room);
 
       if(!allRooms[roomId.room]){
@@ -73,15 +77,20 @@ var namespace = socketio.of('/rooms');
           allRooms[room][pid] = null;
           allRooms[room].counter--;
           socket.to(room).emit('left', {pid:pid});
-          console.log(allRooms[room].counter, "remaining participants")
-            if(allRooms[room].counter === 0){
-              delete allRooms[room];
-              var roomHash = cache[room];
-              delete cache[room];
-              closeRoom(roomHash);
+          console.log(allRooms[room].counter, "remaining participants");
 
-              console.log("Room Closed");
-           }
+          //Waits 90 seconds before closing meeting room
+            setTimeout(function(){
+              if(allRooms[room].counter === 0){
+
+                delete allRooms[room];
+                var roomHash = cache[room];
+                delete cache[room];
+                closeRoom(roomHash);
+
+                console.log("Room Closed");
+             }
+           }, 90000);
         }
       });
 
@@ -112,7 +121,6 @@ var namespace = socketio.of('/rooms');
         }   
       });
     });
-
   });
 
   socketio.on('connection', function (socket) {
@@ -135,6 +143,4 @@ var namespace = socketio.of('/rooms');
     //   console.info('[%s] DISCONNECTED', socket.address);
     // });
   });
-
-
 };

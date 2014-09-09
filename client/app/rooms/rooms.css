@@ -1,62 +1,203 @@
-.whiteboard {
-  width: 100%;
-  height: 100vh;   
+.presentation {
+  height: 100vh;
+  padding-right: 0;
 }
 .sidebar-videos {
-  margin: 2vh 0;
+  padding-left: 0;
 }
-.presentation {
-  margin: 2vh 0;
-  height: 96vh;
-  margin-left: 40px;
-}
-.main.video {
-  display: block;
-  width: 100%;
+.presentation .vid {
   height: 100%;
 }
-.individual.video {
-  display: block;
-  width: 100%;
-  height: 24vh;
+ul {
+  padding: 0;
+  margin: 0;
 }
-.slide-out {
+li {
+  color: #aaa;
+  margin: 0px;
+  padding-right: 8px;
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-bottom: 0px;
+  display: inline;
+}
+.label {
+  font-weight: normal !important;
+  font-size: 16px;
   position: absolute;
-  top: 10px;
-  left: -245px;
-  z-index: 1;
-  padding-right: 20px;
-  transition: left 1s ease;
-  border-radius: 0 5px 5px 0;
-  background: rgba(0,0,255,.5);
+  z-index: 10;
+  padding: 4px;
+  margin: 0;
+  color: grey;
 }
-.slide-out:hover {
-  left: 0px;
+.content {
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
-.slide-out ul {
-  list-style: none;
-}
-.slide-out li {
+.main {
   display: block;
-  float: left;
-  padding: 10px;
+  width: auto;
+  max-width: 100%;
   height: 100%;
+  border-width: 3px;
+  border-radius: 3px;
+  z-index: 0;
 }
-.slide-out li:hover {
-  background-color: rgba(255,0,0,.5);
-  height: 100%;
+.video {
+  display: block;
+  padding: 0 !important;
+  margin: 0 auto;
+  border-color: #777;
+  border-style: solid;
+}
+.individual {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  border-width: 0 3px 0 3px;
+}
+.individual:first-child {
+  border-top-width: 3px;
+  border-radius: 3px 3px 0 0;
+}
+.individual:last-child {
+  border-bottom-width: 3px;
+  border-radius: 0 0 3px 3px;
+}
+.controls {
+  padding: 10px;
+  margin: 0px;
+}
+.controls > ul > li {
+  list-style-type: none;
+}
+.toggleable {
+  cursor: pointer;
+}
+.chat-container {
+  min-width: 240px;
+  margin: 0px;
+  padding: 0px;
+  width: 24%;
+  top: 25px;
+  left: -24%;
+  z-index: 1;
+  background-color: #333;
+  opacity: 0.9;
+  height: calc(100vh - 50px);
+  position: absolute;
+  transition: all 1s ease;
+}
+.chat-container.show {
+  left: 0;
+}
+.chat-container.show .chat-toggle svg {
+  transform: rotate(0deg);
+}
+.chat-toggle {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  padding: 10px 0;
+  background: #555;
+  top: 0;
+  right: -40px;
+  text-align: center;
+  border-radius: 0 5px 5px 0;
+}
+.chat-toggle svg {
+  transform: rotate(180deg);
+  transition: all 1s ease;
+  fill: white;
+  height: 20px;
 }
 .chat {
-  left: -245px;
-  z-index: 1;
-  width: 265px;
-  position: absolute;
-  top: 100px;
-  padding-right: 20px;
-  border-radius: 0 5px 5px 0;
-  transition: left 1s ease;
-  background-color: rgba(0,255,0,.5);
+  padding-top: 0px;
+  padding-right: 8px;
+  padding-bottom: 8px;
+  padding-left: 8px;
+  margin: 0px;
 }
-.chat:hover {
-  left: 0px;
+.messages-container {
+  position: relative;
+  z-index: 0;
+  padding: 0px;
+  margin: 0px;
+  height: calc(100vh - 226px);
+  background-color: #444;
+}
+.messages {
+  z-index: -100;
+  overflow: scroll;
+  height: calc(100vh - 226px);
+}
+.messages-shadow {
+  z-index: 100;
+  padding: 0px;
+  margin: 0px;
+  background-color: transparent;
+  height: calc(100vh - 226px);
+  -moz-box-shadow: inset 0 0 10px #000;
+  -webkit-box-shadow: inset 0 0 10px #000;
+  box-shadow: inset 0 0 10px #000;
+}
+.message-input {
+  padding-top: 8px;
+}
+.chat-text {
+  color: #999;
+  border: 1px solid #555;
+  background-color: #444;
+  padding: 4px;
+  margin: 0;
+}
+.chat-send-button {
+  background-color: #333 !important;
+  border-radius: 4px;
+  border: 1px solid #666;
+  width: 60px;
+  height: 24px;
+  color: #aaa;
+  padding: 0;
+  float: right;
+  margin-bottom: 8px;
+  margin-top: 4px;
+}
+.boxsizingBorder {
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.styleA {
+  position: relative;
+  z-index: -1;
+  font-weight: normal !important;
+  color: #CCC;
+  background-color: #414141;
+  padding: 4px;
+  margin: 0;
+}
+.styleB {
+  position: relative;
+  z-index: -1;
+  font-weight: normal !important;
+  color: #CCC;
+  background-color: #373737;
+  padding: 4px;
+  margin: 0;
+}
+.un {
+  color: #999;
+  padding-left: 4px;
+  margin-top: 8px;
+  margin-left: 4px;
+  width: 90px;
+}
+.youAre {
+  font-size: 14px;
+  color: #999;
+  margin-top: 4px;
+  margin-right: 4px;
 }
