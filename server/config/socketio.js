@@ -35,7 +35,7 @@ function onConnect(socket) {
 
 module.exports = function (socketio, cache) {
 
-console.log("eneter")
+console.log("enter")
 var namespace = socketio.of('/rooms');
 
  //joins namespace when user enters room
@@ -121,7 +121,6 @@ var namespace = socketio.of('/rooms');
         }   
       });
     });
-
   });
 
   socketio.on('connection', function (socket) {
@@ -144,6 +143,4 @@ var namespace = socketio.of('/rooms');
     //   console.info('[%s] DISCONNECTED', socket.address);
     // });
   });
-
-
 };

@@ -11,6 +11,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var config = require('./config/environment');
 
+
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
@@ -30,5 +31,14 @@ server.listen(config.port, config.ip, function () {
   console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
 });
 
+var chat = require('./config/socketio.chat.js').listen(server);
+
+app.get("/*", function(req, res) {
+  chat.socket.emit('start');
+});
+
 // Expose app
 exports = module.exports = app;
+
+
+

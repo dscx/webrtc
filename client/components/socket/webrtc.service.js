@@ -264,7 +264,12 @@ angular.module('webrtcApp')
   RtcSock.socket.on('answer', function(data){
     peers[data.sender].onAnswer(data.answer);
   });
-    
+
+
+
+
+
+
   //Does not trigger above
   function media(pc, pid){
     getUserMedia(contraint, function(localStream){
