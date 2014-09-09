@@ -13,7 +13,8 @@ angular.module('webrtcApp')
     // var socket = socketFactory({
     //   ioSocket: ioSocket
     // });
-    var socket = io('http://localhost:9000');
+    //var socket = io('http://localhost:9000');
+    var socket = io.connect(document.location.protocol+'//'+document.location.host);
     return {
       socket: socket,
 
