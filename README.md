@@ -15,7 +15,7 @@ Meeting.io
 
 ## Usage
 
-Use Meeting.io as a light-weight alternative to google hangouts or skype. No signup required. Click and go.
+Use OurMeeting as a light-weight alternative to google hangouts or skype. No signup required. Click and go.
 
 ## Requirements
 
