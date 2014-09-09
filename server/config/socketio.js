@@ -65,7 +65,6 @@ var namespace = socketio.of('/rooms');
 
       var pid = allRooms[roomId.room].length;
       allRooms[roomId.room].push(socket);
-      console.log(pid);
 
       var room = roomId.room;
       var otherPids = Array.apply(null, {length: pid}).map(Number.call, Number);
@@ -139,6 +138,4 @@ var namespace = socketio.of('/rooms');
     //   console.info('[%s] DISCONNECTED', socket.address);
     // });
   });
-
-
 };

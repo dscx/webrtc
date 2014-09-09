@@ -8,7 +8,7 @@
 
 <div class="row">
 
-  <div class="chat-container" ng-class="{show: showChat}">
+  <div class="chat-container" ng-class="{show: showChat}" ng-app="webrtcApp" ng-controller="ChatController">
     <div class="controls">
       <ul>
         <li ng-click="toggleMyVideo()" class="toggleable">Toggle Video</li>
@@ -33,62 +33,6 @@
       <div class="message-input">
         <textarea class="chat-text boxsizingBorder" type="text"></textarea>
         <button type="submit" class="chat-send-button">Send</button>
-        <script> // Chat
-
-          var socket = io();
-
-          var href = $(location).attr("href");
-          var roomNumber = href.substr(href.lastIndexOf('/') + 1);
-
-          $('.un').empty();
-          var myUsername = "";
-          $('.un').on("keyup change", function() {
-            myUsername = this.value;
-          });
-
-          socket.on('connect', function() {
-            socket.emit('roomNumber', roomNumber);
-          });
-
-          function appendMessage(username, message) {
-            var previousStyle = $('.messages').children().last().attr('class');
-            if (previousStyle === 'styleA') {
-              var currentStyle = 'styleB';
-            } else {
-              var currentStyle = 'styleA';
-            }
-
-            var styledMessage = $('<div class="' + currentStyle + '"></div>').append(username + ': ' + message);
-            $('.messages').append(styledMessage);
-            $('.messages').scrollTop($('.messages')[0].scrollHeight);
-            $('.chat-text').val('');
-          }
-
-          $('.chat-send-button').on('click', function() {
-            var message = $('.chat-text').val();
-            appendMessage(myUsername, message);
-            socket.emit('message', {
-              'user': myUsername,
-              'text': message,
-              'roomNumber': roomNumber
-            });
-            return false;
-          });
-
-          socket.on('message', function(obj) {
-            appendMessage(obj.user, obj.text);
-          })
-
-          socket.on('user', function(obj) {
-            if (myUsername === "") {
-              myUsername = obj.user;
-              $('.un').empty();
-              $('.un').val(myUsername);
-            }
-          });
-
-        </script>
-
       </div>
     </div>
   </div>
