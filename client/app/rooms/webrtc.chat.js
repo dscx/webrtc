@@ -55,6 +55,7 @@ function ChatController($scope, socket) {
     }
   });
 
+  // changes the username:
   $('.un').on("keyup change", function() {
     $scope.myUsername = this.value;
   });
@@ -81,6 +82,8 @@ function ChatController($scope, socket) {
 
     var styledMessage = $('<div class="' + currentStyle + '"></div>').append(username + ': ' + message);
     $('.messages').append(styledMessage);
+
+    //scroll to bottom of chat after appending new message:
     $('.messages').scrollTop($('.messages')[0].scrollHeight);
     $('.chat-text').val('');
   };
