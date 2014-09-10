@@ -5,6 +5,7 @@ angular.module('webrtcApp')
   .factory('socket', function(socketFactory, $rootScope) {
 
     // socket.io now auto-configures its connection when we ommit a connection url
+    
     var ioSocket = io('/chat', {
         path: '/socket.io-client'
       });
