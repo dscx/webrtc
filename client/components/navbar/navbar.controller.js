@@ -6,7 +6,6 @@ angular.module('webrtcApp')
     }];
     $scope.isHome = function(){
       var bool = $location.path() === '/';
-      console.log(bool);
       return bool;
     };
     $scope.isCollapsed = true;
