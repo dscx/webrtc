@@ -9,7 +9,7 @@
 var config = require('./environment');
 var db = require('../api/rooms/rooms.controller.js');
 
-var allRooms = {};
+
 
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
@@ -35,11 +35,12 @@ function onConnect(socket) {
 
 module.exports = function (socketio, cache) {
 
-console.log("enter")
+console.log("enter");
 var namespace = socketio.of('/rooms');
-
+var allRooms = {};
  //joins namespace when user enters room
  namespace.on('connection', function(socket){
+
     console.log('someone connected to the namespace');
     socket.address = socket.handshake.address !== null ?
           socket.handshake.address.address + ':' + socket.handshake.address.port :
@@ -81,14 +82,16 @@ var namespace = socketio.of('/rooms');
 
           //Waits 90 seconds before closing meeting room
             setTimeout(function(){
-              if(allRooms[room].counter === 0){
+              if(allRooms[room]){
+                if(allRooms[room].counter === 0){
 
-                delete allRooms[room];
-                var roomHash = cache[room];
-                delete cache[room];
-                closeRoom(roomHash);
+                  delete allRooms[room];
+                  var roomHash = cache[room];
+                  delete cache[room];
+                  closeRoom(roomHash);
 
-                console.log("Room Closed");
+                  console.log("Room Closed");
+               }
              }
            }, 90000);
         }

@@ -2,19 +2,18 @@
 'use strict';
 
 angular.module('webrtcApp')
-  .factory('socket', function(socketFactory, $rootScope) {
+  .factory('socket', function(socketFactory) {
 
     // socket.io now auto-configures its connection when we ommit a connection url
-    // var ioSocket = io('', {
-    //   // Send auth token on connection, you will need to DI the Auth service above
-    //   // 'query': 'token=' + Auth.getToken()
-    //   path: '/socket.io-client'
-    // });
-    // var socket = socketFactory({
-    //   ioSocket: ioSocket
-    // });
-    //var socket = io('http://localhost:9000');
-    var socket = io.connect(document.location.protocol+'//'+document.location.host);
+    var ioSocket = io('', {
+      // Send auth token on connection, you will need to DI the Auth service above
+      // 'query': 'token=' + Auth.getToken()
+      path: '/socket.io-client'
+    });
+    var socket = socketFactory({
+      ioSocket: ioSocket
+    });
+
     return {
       socket: socket,
 
@@ -69,24 +68,6 @@ angular.module('webrtcApp')
       unsyncUpdates: function (modelName) {
         socket.removeAllListeners(modelName + ':save');
         socket.removeAllListeners(modelName + ':remove');
-      },
-      on: function (eventName, callback) {
-        socket.on(eventName, function () {  
-          var args = arguments;
-          $rootScope.$apply(function () {
-            callback.apply(socket, args);
-          });
-        });
-      },
-      emit: function (eventName, data, callback) {
-        socket.emit(eventName, data, function () {
-          var args = arguments;
-          $rootScope.$apply(function () {
-            if (callback) {
-              callback.apply(socket, args);
-            }
-          });
-        })
       }
     };
   });

@@ -10,11 +10,15 @@ angular.module('webrtcApp')
   //using settimeout to wait until user stream is available
   $scope.setInitial = function(){
     var stream = WebRTC.myStream();
-    if(!stream){
+    console.log('stream', stream);
+    if(stream === null && WebRTC.error.video === undefined){
       $timeout(function(){
         $scope.setInitial();
       }, 1000);
+    } else if(stream === null){
+      $location.path('/');
     } else {
+      console.log(WebRTC.error);
       $scope.main = stream;
       $scope.myStream = stream;
       //Need access to raw element for cross browser support
