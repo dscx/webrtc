@@ -3,7 +3,10 @@
   padding-right: 0;
 }
 .sidebar-videos {
+  height: 100vh;
+  overflow: scroll;
   padding-left: 0;
+  margin-right: 0;
 }
 .presentation .vid {
   height: 100%;
