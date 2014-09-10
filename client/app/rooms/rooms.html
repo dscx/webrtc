@@ -4,8 +4,8 @@
   
     <div class="controls">
       <ul>
-        <li ng-click="toggleMyVideo()" class="toggleable">Toggle Video</li>
-        <li ng-click="toggleMyAudio()" class="toggleable">Toggle Audio</li>
+        <li ng-click="toggleMyVideo()" class="toggleable" ng-class="{off: !media.video}">Toggle Video</li>
+        <li ng-click="toggleMyAudio()" class="toggleable" ng-class="{off: !media.audio}">Toggle Audio</li>
       </ul>
       <div class="youAre">
         You are:<input class="un" type="text"></input>

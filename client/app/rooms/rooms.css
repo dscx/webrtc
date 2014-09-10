@@ -52,7 +52,7 @@ li {
   border-style: solid;
 }
 .individual {
-  width: auto;
+  width: 100%;
   max-width: 100%;
   height: auto;
   border-width: 0 3px 0 3px;
@@ -71,6 +71,13 @@ li {
 }
 .controls > ul > li {
   list-style-type: none;
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid #666;
+}
+.controls > ul > li.off {
+  background-color: #800;
 }
 .toggleable {
   cursor: pointer;

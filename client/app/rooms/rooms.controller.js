@@ -11,6 +11,11 @@ angular.module('webrtcApp')
   $scope.sidebarVideos = {links:{}, length:0};
   // timeout that checks for new connections
   $scope.promise = {};
+  // keep track of state of users audio/video
+  $scope.media = {
+    audio: true,
+    video: true
+  };
 
 
 // -------------------- SCOPE FUNCTIONS -------------------- //
@@ -18,10 +23,12 @@ angular.module('webrtcApp')
   $scope.toggleMyVideo = function(){
     console.log(WebRTC);
     WebRTC.toggleVideo();
+    $scope.media.video = !$scope.media.video;
   };
   // Toggle own audio streams
   $scope.toggleMyAudio = function(){
     WebRTC.toggleAudio();
+    $scope.media.audio = !$scope.media.audio;
   };
 
 
