@@ -12,7 +12,6 @@ angular.module('webrtcApp')
   });
 
   socket.on('connect', function() {
-    socket.socket.reconnect();
     socket.emit('roomNumber', $scope.roomNumber);
   });
 
@@ -45,6 +44,7 @@ angular.module('webrtcApp')
       'text': message,
       'roomNumber': $scope.roomNumber
     });
+    $('.chat-text').val('');
     return false;
   });
 
@@ -61,7 +61,6 @@ angular.module('webrtcApp')
 
     //scroll to bottom of chat after appending new message:
     $('.messages').scrollTop($('.messages')[0].scrollHeight);
-    $('.chat-text').val('');
   };
 
 });
