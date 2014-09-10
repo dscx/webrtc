@@ -1,6 +1,6 @@
 'use strict';
-
-function ChatController($scope, socket) {
+angular.module('webrtcApp')
+.controller('ChatController', function ChatController($scope, socket) {
   $scope.href = $(location).attr("href");
   $scope.roomNumber = $scope.href.substr($scope.href.lastIndexOf('/') + 1);
   $scope.myUsername = '';
@@ -64,7 +64,7 @@ function ChatController($scope, socket) {
     $('.chat-text').val('');
   };
 
-}
+});
 
 
   

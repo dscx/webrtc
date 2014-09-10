@@ -82,14 +82,16 @@ var allRooms = {};
 
           //Waits 90 seconds before closing meeting room
             setTimeout(function(){
-              if(allRooms[room].counter === 0){
+              if(allRooms[room]){
+                if(allRooms[room].counter === 0){
 
-                delete allRooms[room];
-                var roomHash = cache[room];
-                delete cache[room];
-                closeRoom(roomHash);
+                  delete allRooms[room];
+                  var roomHash = cache[room];
+                  delete cache[room];
+                  closeRoom(roomHash);
 
-                console.log("Room Closed");
+                  console.log("Room Closed");
+               }
              }
            }, 90000);
         }
