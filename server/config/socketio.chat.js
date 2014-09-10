@@ -2,9 +2,9 @@ var socketio = require('socket.io/');
 
 var namesUsed = {};
 
-module.exports.listen = function(app) {
-  io = socketio.listen(app);
-  io.on('connection', function(socket) {
+module.exports.listen = function(io) {
+  var namespace = io.of('chat');
+  namespace.on('connection', function(socket) {
 
     console.log("Chat: Joined");
 
