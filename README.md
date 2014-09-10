@@ -13,18 +13,17 @@ OurMeeting
 
 ## Usage
 
-Use OurMeeting as a light-weight alternative to google hangouts or skype. No signup required. Click and go.
+www.ourmeeting.com
 
 ## Requirements
 
-- Node
+- Node/Express
 - MongoDb
-- Socket io
+- Socket.io
 - Angular
+- WebRTC
 
 ## Development
-
-Run mongod then grunt serve from the root directory.
 
 ### Installing Dependencies
 
@@ -33,6 +32,11 @@ From within the root directory:
 npm install
 
 bower install
+
+## Local Testing
+
+Run mongod then grunt serve from the root directory.
+Access on localhost:9000
 
 ## Contributing
 
