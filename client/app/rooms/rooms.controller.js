@@ -59,12 +59,19 @@ angular.module('webrtcApp')
   // when a sidebar video is clicked
   angular.element('.sidebar-videos').on('click', '.video.individual', function(event){
     // get the clicked source
-    var clicked = event.target.src;
+    var clickSrc = event.target.src;
+    var clickMute = event.target.muted;
     // get the main source
-    var main = $scope.main.src;
+    var mainSrc = $scope.main.src;
+    var mainMute = $scope.main.muted;
     // swap clicked with main
-    $scope.main.src = clicked;
-    event.target.src = main;
+    $scope.main.src = clickSrc;
+    $scope.main.muted = clickMute;
+    console.log('Is main muted?', $scope.main.muted);
+
+    event.target.src = mainSrc;
+    event.target.muted = mainMute;
+    console.log('Is sidebar muted?', event.target.muted);
   });
 
 // -------------------- PRIVATE FUNCTIONS -------------------- //
@@ -88,7 +95,7 @@ angular.module('webrtcApp')
     } else {
       // find main video
       $scope.main = angular.element.find('.main')[0];
-
+      $scope.main.muted = "true";
       //from components/socket/adapter.js, attach stream to element
       attachMediaStream($scope.main, stream);
     }
