@@ -66,12 +66,17 @@ angular.module('webrtcApp')
   var setMain = function(){
     // start user stream
     var stream = WebRTC.myStream();
+    console.log('stream', stream);
     //using settimeout to wait until user stream is available
-    if(!stream){
+    if(stream === null && WebRTC.error.video === undefined){
       $timeout(function(){
         setMain();
       }, 1000);
-
+      
+    } else if(stream === null){
+      console.log(WebRTC.error);
+      $location.path('/');
+      
     // when user stream is initialized
     } else {
       // find main video
