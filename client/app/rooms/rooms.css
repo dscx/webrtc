@@ -4,7 +4,7 @@
 }
 .sidebar-videos {
   height: 100vh;
-  overflow: scroll;
+  overflow: auto;
   padding-left: 0;
   margin-right: 0;
 }
@@ -139,7 +139,7 @@ li {
 }
 .messages {
   z-index: -100;
-  overflow: scroll;
+  overflow: auto;
   height: calc(100vh - 226px);
 }
 .messages-shadow {
